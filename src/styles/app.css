@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.App {
+  text-align: center;
+  color: #FFFFFF !important;
+    background-color: black;
+    max-height: 100vh !important;
+    min-height: 100vh !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+    overflow: hidden !important;
+    cursor: none;
+    cursor: url('../images/cursor3.ico') 2 2, none !important;
+
+}
+#page-wrap {
+  overflow: auto !important;
+  text-align: center;
+    max-height: 100vh !important;
+    min-height: 100vh !important;
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+
+  /* Our sidebar item styling */
+  text-decoration: none;
+  margin-bottom: 10px;
+  color: #d1d1d1;
+  transition: color 0.2s;
+}
+
+/* Change color on hover */
+.bm-item:hover {
+  color: white;
+}
+
+/* The rest copied directly from react-burger-menu docs */
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: relative;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+  display: block;
+}
+.bm-burger-button-hidden {
+  display: none !important;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #00FFCF;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #FF0000;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #000000bf;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.ui.button {
+  cursor: url('../images/cursor3.ico') 2 2, none !important;
+}
+
+.mainView {
+    padding-top: 10vh !important;
+}
+
+p {
+  display: table !important;
+}
+
+.ui.grid {
+  margin: unset !important;
+}
+
+h1, h2, h3, h4, h5, p, code {
+  font-family: 'Press Start 2P', cursive !important;
+}
+
+.ui.grid > * {
+  padding: unset !important;
+}
+.pad {
+  padding: 5px !important;
+}
+
+.header {
+  min-width: 101vw !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+}
+.glitch {
+  position: absolute !important;
+  z-index: -1000 !important;
+}
+
+.headerText {
+  margin-top: 5vh;
+}
+
+.ui.segment {
+  background: #000000d0 !important;
+  border: 1px solid rgb(46, 150, 255) !important;
+  box-shadow: 0 4px 6px 0 rgba(0, 128, 255, 0.57) !important;
+}
+
+.Term {
+  background: #000000d0 !important;
+  border: 1px solid rgb(46, 150, 255) !important;
+  box-shadow: 0 4px 6px 0 rgba(0, 128, 255, 0.57) !important;
+}
+
+.outerCard {
+  background: unset !important;
+  border: unset !important;
+  box-shadow: unset !important;
+  border-top: unset !important;
+  border-top-width: unset !important;
+}
+
+.ui.card {
+  margin: 1.5em 0 !important
+}
+.ui.card > :first-child, .ui.cards > .card > :first-child, .innerCard {
+  border-top-width: unset;
+}
+
+.ui.container{
+  margin-left: unset !important;
+  margin-right: unset !important;
+}
+
+  .logo {
+    max-height: 100px;
+    max-width: 100px;
+    min-height: 100px;
+  }
+  .bm-burger-button-hide {
+    top: -33px !important;
+    opacity: 0;
+  }
+
+  .ui.centered.card {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.ui.modal > .content {
+  display: block;
+  width: 100%;
+  font-size: 1em;
+  line-height: 1.4;
+  padding: 1.5rem;
+  background: #040404;
+  color: #F00;
+  text-align: center;
+}
