@@ -10,10 +10,10 @@ if (window.ethereum.networkVersion == "1") {
   credAddr = ""
 }
 else {
-  unipoolAddr = "0x6ecDFf5F4FbE7C1dfA3284f492348136E7e74523"
+  unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
   lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
   coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
-  credAddr = "0x40903c5cE3596F2Ea49ED8870d14EDCa05Bdb329"
+  credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
 }
 class Web3Adapter {
   constructor(provider, cb) {
@@ -68,7 +68,7 @@ class Web3Adapter {
       let allowance = await this.lp.methods.allowance(this.selectedAddress, unipoolAddr).call({ from: this.selectedAddress });
       allowance = await this.web3.utils.toWei(String(allowance), "ether");
       let amt = new this.BN(weiAmount)
-      if (amt.lt(allowance)) {
+      if (!amt.lt(allowance)) {
         this.cb.call(this, "wait", "Approving...")
         await this.approval();
         this.cb.call(this, "wait", "Staking...")
