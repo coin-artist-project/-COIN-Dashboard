@@ -3,14 +3,17 @@ const uniABI = require("./uniABI.js");
 const erc20ABI = require("./erc20ABI.js")
 
 let unipoolAddr, coinAddr, lpAddr, credAddr;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+if (window.ethereum.networkVersion == "1") {
+  unipoolAddr = ""
+  lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
+  coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
+  credAddr = ""
+}
+else {
   unipoolAddr = "0x6ecDFf5F4FbE7C1dfA3284f492348136E7e74523"
   lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
   coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
   credAddr = "0x40903c5cE3596F2Ea49ED8870d14EDCa05Bdb329"
-}
-else {
-  // mainnet contracts here
 }
 class Web3Adapter {
   constructor(provider, cb) {
