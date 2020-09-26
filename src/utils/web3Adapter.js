@@ -68,7 +68,7 @@ class Web3Adapter {
       let allowance = await this.lp.methods.allowance(this.selectedAddress, unipoolAddr).call({ from: this.selectedAddress });
       allowance = await this.web3.utils.toWei(String(allowance), "ether");
       let amt = new this.BN(weiAmount)
-      if (!amt.lt(allowance)) {
+      if (amt.lt(allowance)) {
         this.cb.call(this, "wait", "Approving...")
         await this.approval();
         this.cb.call(this, "wait", "Staking...")
@@ -82,6 +82,7 @@ class Web3Adapter {
       this.cb.call(this, "success")
     }
     catch (ex) {
+      console.log(ex)
       this.cb.call(this, "error", String("Could not stake"))
     }
   }
@@ -89,8 +90,6 @@ class Web3Adapter {
   async approval() {
     try {
       let maxApproval = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
-      maxApproval = await this.web3.utils.toWei(maxApproval, "ether")
-
       await this.lp.methods.approve(unipoolAddr, maxApproval).send({ from: this.selectedAddress });
     }
     catch (ex) {
@@ -147,7 +146,8 @@ class Web3Adapter {
   async getEarned() {
     try {
       let rewards = await this.unipool.methods.earned(this.selectedAddress).call({ from: this.selectedAddress });
-      this.rewards = await this.web3.utils.fromWei(rewards, "ether")
+      this.rewards = await this.web3.utils.fromWei(rewards, "ether").toString()
+      console.log(this.rewards)
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not find reward"))
@@ -168,6 +168,7 @@ class Web3Adapter {
       await this.getEarned()
     }
     catch (ex) {
+      console.log(ex)
       this.cb.call(this, "error", String("Could not get balances"))
     }
   }
