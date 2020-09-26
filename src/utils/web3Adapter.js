@@ -68,7 +68,7 @@ class Web3Adapter {
       let allowance = await this.lp.methods.allowance(this.selectedAddress, unipoolAddr).call({ from: this.selectedAddress });
       allowance = await this.web3.utils.toWei(String(allowance), "ether");
       let amt = new this.BN(weiAmount)
-      if (amt.lt(allowance)) {
+      if (!amt.lt(allowance)) {
         this.cb.call(this, "wait", "Approving...")
         await this.approval();
         this.cb.call(this, "wait", "Staking...")
