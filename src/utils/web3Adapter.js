@@ -206,10 +206,11 @@ class Web3Adapter {
       let staked = await this.lp.methods.balanceOf(unipoolAddr).call();
       let lpStaked = (staked / supply) * 100
       this.stats["totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-      let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / supply) * 100
+      let uniSupply = await this.unipool.methods.totalSupply().call();
+      let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / uniSupply) * 100
       this.stats["userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-      let earnRate = userStaked * (10000 /30)
-      this.stats["earnRate"] = ((Math.floor(parseFloat(earnRate.toString() / 100) * 1000000)) / 1000000).toFixed(6)
+      let earnRate = userStaked * (10000 /30) / 100;
+      this.stats["earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
     }
     catch(ex) {
       this.cb.call(this, "error", String("Could not get stats"));
