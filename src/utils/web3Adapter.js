@@ -76,14 +76,12 @@ class Web3Adapter {
       if (amt.lt(String(this.balances["lp"]))) {
         throw "Balance too low";
       }
-      console.log(weiAmount)
       await this.unipool.methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
       await this.getBalances();
       await this.getEarned();
       this.cb.call(this, "success")
     }
     catch (ex) {
-      console.log(ex)
       this.cb.call(this, "error", String("Could not stake"))
     }
   }
@@ -122,7 +120,6 @@ class Web3Adapter {
       this.cb.call(this, "success")
     }
     catch (ex) {
-      console.log(ex)
       this.cb.call(this, "error", String("Could not exit!"))
     }
   }
@@ -148,7 +145,6 @@ class Web3Adapter {
     try {
       let rewards = await this.unipool.methods.earned(this.selectedAddress).call({ from: this.selectedAddress });
       this.rewards = await this.web3.utils.fromWei(rewards, "ether").toString()
-      console.log(this.rewards)
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not find reward"))
@@ -169,7 +165,6 @@ class Web3Adapter {
       await this.getEarned()
     }
     catch (ex) {
-      console.log(ex)
       this.cb.call(this, "error", String("Could not get balances"))
     }
   }
