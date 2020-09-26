@@ -189,3 +189,19 @@ h1, h2, h3, h4, h5, p, code {
 .calmHead {
   color: #ff4bef;
 }
+
+.ui.form input:not([type]), .ui.form input[type="date"], .ui.form input[type="datetime-local"], .ui.form input[type="email"], .ui.form input[type="file"], .ui.form input[type="number"], .ui.form input[type="password"], .ui.form input[type="search"], .ui.form input[type="tel"], .ui.form input[type="text"], .ui.form input[type="time"], .ui.form input[type="url"] {
+  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+  margin: 0;
+  outline: 0;
+  -webkit-appearance: none;
+  line-height: 1.21428571em;
+  padding: .67857143em 1em;
+  font-size: 1em;
+  background: #e9eae9;
+  border: 1px solid rgba(34,36,38,.15);
+  color: rgb(0, 0, 0);
+  border-radius: 0;
+  box-shadow: 0 0 0 0 transparent inset;
+  transition: color .1s ease,border-color .1s ease;
+}

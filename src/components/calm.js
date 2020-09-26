@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Button, Container, Grid, Card, Segment, Icon, Form } from "semantic-ui-react"
+import { Button, Container, Grid, Card, Segment, Icon, Form, Input } from "semantic-ui-react"
 import Tilt from 'react-tilt'
 import Scramble from 'react-scramble'
 import { StoreContext } from "../store/store.js";
@@ -32,12 +32,73 @@ function Calm(props) {
     }
   };
 
+  const refresh = () => {
+    if (store.wallet) {
+      return (
+        <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh"/>Update</Button>
+      )
+    }
+    return (
+      <></>
+    )
+  }
+  const exit = () => {
+    if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
+      return (
+        <Grid.Column width={4} centered="true">
+          <Card textAligned="center" className="outerCard" centered>
+            <Tilt className="Tilt">
+              <Segment.Group textAligned="center" className="Term">
+                <Grid.Row className="pad" centered>
+                  <Grid.Column textAlign="center">
+                    <Icon size="massive" color="red" name="sign-out" />
+                  </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row className="pad" centered>
+                  <Grid.Column textAlign="center">
+                    <h3>Exit();</h3>
+                    <p>----</p>
+                    <p>No stake to exit</p>
+                  </Grid.Column>
+                </Grid.Row>
+              </Segment.Group>
+            </Tilt>
+          </Card>
+        </Grid.Column>
+      )
+    }
+    return (
+      <Grid.Column width={4} centered="true">
+        <Card textAligned="center" className="outerCard" centered>
+          <Tilt className="Tilt">
+            <Segment.Group textAligned="center" className="Term">
+              <Grid.Row className="pad" centered>
+                <Grid.Column textAlign="center">
+                  <Icon size="massive" color="red" name="sign-out" />
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className="pad" centered>
+                <Grid.Column textAlign="center">
+                  <h3>Exit();</h3>
+                  <p>----</p>
+                  <p>Leave pool with rewards and stake</p>
+                  <Button inverted color="red" onClick={() => store.wallet.exit()}>Exit</Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Segment.Group>
+          </Tilt>
+        </Card>
+      </Grid.Column>
+    )
+  }
+
   const stakingDisp = () => {
     if (
       (!store.wallet.balances["uni"] && !store.wallet.balances["lp"]) ||
       (store.wallet.balances["lp"] == "0" && store.wallet.balances["uni"] === "0")
-    )
-    {
+    ) {
       return (
         <Segment.Group textAligned="center" className="Term">
           <Grid.Row className="pad" centered>
@@ -47,8 +108,9 @@ function Calm(props) {
           </Grid.Row>
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
-            <h3>Staking();</h3>
-            <p>Add liquidity to COIN-ETH to join the farm</p>
+              <h3>Staking();</h3>
+              <p>----</p>
+              <p>Add liquidity to COIN-ETH to join the farm</p>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row className="pad" centered>
@@ -73,12 +135,15 @@ function Calm(props) {
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
-              <p>Start staking and get rewards</p>
+              <p>----</p>
               <p>Available: {((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
-                  <input onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
+                  <Input>
+                  <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
+                  <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                  </Input>
                 </Form.Field>
               </Form>
             </Grid.Column>
@@ -102,8 +167,10 @@ function Calm(props) {
           </Grid.Row>
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
-            <h3>Staking();</h3>
-            <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <h3>Staking();</h3>
+              <p>----</p>
+              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>{((Math.floor(parseFloat(store.wallet.stats["userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
             </Grid.Column>
           </Grid.Row>
         </Segment.Group>
@@ -112,33 +179,39 @@ function Calm(props) {
     else {
       return (
         <Segment.Group textAligned="center" className="Term">
-        <Grid.Row className="pad" centered>
-          <Grid.Column textAlign="center">
-            <Icon size="massive" color="green" name="save outline" />
-          </Grid.Column>
-        </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="green" name="save outline" />
+            </Grid.Column>
+          </Grid.Row>
 
-        <Grid.Row className="pad" centered>
-          <Grid.Column textAlign="center">
-            <h3>Staking();</h3>
-            <p>Add more to your stake</p>
-            <p>Staking: { ((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
-            <p>Available: { ((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
-            <Form>
-              <Form.Field>
-                <p>Amount to add</p>
-                <input onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
-              </Form.Field>
-            </Form>
-          </Grid.Column>
-        </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <h3>Staking();</h3>
+              <p>----</p>
+              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>{((Math.floor(parseFloat(store.wallet.stats["userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
+              <p>----</p>
+              <p>Available: {((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <Form>
+                <Form.Field>
+                  <p>Amount to add</p>
+                  <Input>
+                  <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]}/>
+                  <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                  </Input>
 
-        <Grid.Row className="pad" centered>
-          <Grid.Column textAlign="center">
-            <Button inverted onClick={submitStake.bind(this)} color="green">{">"}Add</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Segment.Group>
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Button inverted onClick={submitStake.bind(this)} color="green">{">"}Add</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
       )
     }
   }
@@ -155,6 +228,8 @@ function Calm(props) {
 
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
+              <h3>Rewards();</h3>
+              <p>----</p>
               <p>No Rewards to claim</p>
 
             </Grid.Column>
@@ -173,7 +248,10 @@ function Calm(props) {
         <Grid.Row className="pad" centered>
           <Grid.Column textAlign="center">
             <h3>Rewards();</h3>
-            <p></p>
+            <p>----</p>
+            <p>$COIN Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"]) * 1000000)) / 1000000).toFixed(6)} / Day</p>
+            <p>$CRED Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"] * 100) * 1000000)) / 1000000).toFixed(6)} / Day</p>
+            <p>----</p>
             <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} $COIN</p>
             <p>{((Math.floor(parseFloat(store.wallet.rewards * 100) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
             <p></p>
@@ -217,49 +295,28 @@ function Calm(props) {
     }
     return (
       <>
-      <Grid.Row centered={true} columns={2}>
-        <Grid.Column width={4} centered="true">
-          <Container fluid>
-            <Card textAligned="center" className="outerCard" centered={true}>
+        <Grid.Row centered={true} columns={2}>
+          <Grid.Column width={4} centered="true">
+            <Container fluid>
+              <Card textAligned="center" className="outerCard" centered={true}>
+                <Tilt className="Tilt">
+                  {rewardDisp()}
+                </Tilt>
+              </Card>
+            </Container>
+          </Grid.Column>
+
+          <Grid.Column width={4} centered="true">
+            <Card textAligned="center" className="outerCard" centered>
               <Tilt className="Tilt">
-                {rewardDisp()}
+                {stakingDisp()}
               </Tilt>
             </Card>
-          </Container>
-        </Grid.Column>
+          </Grid.Column>
+          {exit()}
+        </Grid.Row>
+      </>
 
-        <Grid.Column width={4} centered="true">
-          <Card textAligned="center" className="outerCard" centered>
-            <Tilt className="Tilt">
-              {stakingDisp()}
-            </Tilt>
-          </Card>
-        </Grid.Column>
-
-        <Grid.Column width={4} centered="true">
-          <Card textAligned="center" className="outerCard" centered>
-            <Tilt className="Tilt">
-            <Segment.Group textAligned="center" className="Term">
-          <Grid.Row className="pad" centered>
-            <Grid.Column textAlign="center">
-              <Icon size="massive" color="red" name="sign-out" />
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row className="pad" centered>
-            <Grid.Column textAlign="center">
-              <h3>Exit();</h3>
-              <p>Leave pool with rewards and stake</p>
-              <Button inverted color="red" onClick={() => store.wallet.exit()}>Exit</Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Segment.Group>
-            </Tilt>
-          </Card>
-        </Grid.Column>
-      </Grid.Row>
-</>
-      
     )
   }
   return (
@@ -285,8 +342,10 @@ function Calm(props) {
                   ]}
                 />
               </h1>
-              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6))  : ""}</p>
+              <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Total Supply Staked: " + ((Math.floor(parseFloat(store.wallet.stats["totalStaked"]) * 1000000)) / 1000000).toFixed(2) + "%") : ""}</p>
+              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
               <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + ((Math.floor(parseFloat(store.wallet.balances["cred"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                {refresh()}
             </Segment>
           </Tilt>
         </Grid.Row>

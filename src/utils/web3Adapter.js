@@ -41,6 +41,7 @@ class Web3Adapter {
     // token info
     this.balances = {}
     this.rewards = false;
+    this.stats = {}
 
     // account info
     this.accounts = false;
@@ -61,11 +62,13 @@ class Web3Adapter {
       this.coin = new this.web3.eth.Contract(this.erc20ABI, coinAddr);
       this.cred = new this.web3.eth.Contract(this.erc20ABI, credAddr);
 
+      //BN
+      this.BN = this.web3.utils.BN;
+
       // Get address, balances, and load the page
       this.accounts = await this.web3.eth.getAccounts();
       this.selectedAddress = this.accounts[0];
       await this.getBalances();
-      this.BN = this.web3.utils.BN;
       this.cb.call(this, "success")
     }
     catch (ex) {
@@ -188,6 +191,7 @@ class Web3Adapter {
       this.balances["uni"] = await this.web3.utils.fromWei(String(uni), "ether")
       let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
+      await this.getStats()
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not get balances"));
@@ -196,8 +200,24 @@ class Web3Adapter {
     await this.getEarned();
   }
 
+  async getStats() {
+    try {
+      let supply = await this.lp.methods.totalSupply().call();
+      let staked = await this.lp.methods.balanceOf(unipoolAddr).call();
+      let lpStaked = (staked / supply) * 100
+      this.stats["totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+      let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / supply) * 100
+      this.stats["userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+      let earnRate = userStaked * (10000 /30)
+      this.stats["earnRate"] = ((Math.floor(parseFloat(earnRate.toString() / 100) * 1000000)) / 1000000).toFixed(6)
+    }
+    catch(ex) {
+      this.cb.call(this, "error", String("Could not get stats"));
+    }
+  }
+
   async update() {
-    this.cb.call(this, "wait", "Updating balances")
+    this.cb.call(this, "wait", "Updating...")
     try {
       await this.getBalances();
       await this.getEarned();
@@ -207,5 +227,6 @@ class Web3Adapter {
     }
     this.cb.call(this, "success")
   }
+
 }
 export default Web3Adapter;
