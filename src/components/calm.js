@@ -38,7 +38,7 @@ function Calm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>Start staking and get rewards</p>
-              <p>Available: {store.wallet.balances["lp"]}</p>
+              <p>Available: {parseFloat(store.wallet.balances["lp"]).toFixed(6)}</p>
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
