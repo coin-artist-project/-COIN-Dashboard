@@ -4,10 +4,10 @@ const erc20ABI = require("./erc20ABI.js")
 
 let unipoolAddr, coinAddr, lpAddr, credAddr;
 if (window.ethereum.networkVersion == "1") {
-  unipoolAddr = ""
+  unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
   lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
   coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
-  credAddr = ""
+  credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
 }
 else {
   unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
