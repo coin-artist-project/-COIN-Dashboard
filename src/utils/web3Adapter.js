@@ -168,7 +168,6 @@ class Web3Adapter {
       await this.getEarned()
     }
     catch (ex) {
-      console.log(ex)
       this.cb.call(this, "error", String("Could not get balances"))
     }
   }
