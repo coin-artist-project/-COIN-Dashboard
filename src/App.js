@@ -19,14 +19,19 @@ import Calm from "./components/calm.js";
 function App() {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
+  const [updateView, setUpdateView] = useState(false);
 
   const propStates = {
     isLoading: isLoading,
     setLoading: setLoading,
     isError: isError,
-    setError: setError
+    setError: setError,
+    updateView: updateView,
+    setUpdateView: setUpdateView,
 }
-
+// TODO: HOME
+//<Route exact path="/" component={Home} />
+//<Route exact path="/calm" component={() => <Calm states={propStates}/>} />
   return (
     <Container className="App">
       <Grid stackable={true} className="App crt">
@@ -36,16 +41,17 @@ function App() {
       <Wallet states={propStates}/>  
         </Rail>
         <Router>
-        <BurgerMenu pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } />
+          <div id="outer-container">
+        <BurgerMenu className="hellow" pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } />
         <div id="page-wrap">
         <Dimmer page active={Boolean(isLoading)}>
                 <Loader>{String(isLoading)}</Loader>
           </Dimmer>
           <Errors states={propStates} />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/calm" component={() => <Calm states={propStates}/>} />
+          <Route exact path="/" component={() => <Calm states={propStates}/>} />
         </Switch>
+        </div>
         </div>
         </Router>
       </Store>

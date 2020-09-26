@@ -32,21 +32,20 @@ function Wallet(props) {
         actions.addWallet(web3Adapter);
     }
 
-    const adapterCb = (event, data) => {
-        props.states.setLoading(false);
+    const adapterCb = async(event, data) => {
+        await props.states.setLoading(false);
         switch (event) {
             case 'success':
-                setUpdateView((updateView) => ++updateView);
+                await props.states.setUpdateView(true);
                 break;;
             case 'wait':
                 props.states.setLoading(data);;
                 return;;
             case 'error':
-                console.log(data)
                 props.states.setError(data);;
                 break;;
             default:
-                console.log(event)
+                // /console.log(event)
         }
         
     }

@@ -42,7 +42,7 @@
 
 /* Position and sizing of burger button */
 .bm-burger-button {
-  position: relative;
+  position: absolute;
   width: 36px;
   height: 30px;
   left: 36px;
@@ -97,10 +97,6 @@
 
 .mainView {
     padding-top: 10vh !important;
-}
-
-p {
-  display: table !important;
 }
 
 .ui.grid {
@@ -188,4 +184,8 @@ h1, h2, h3, h4, h5, p, code {
   background: #040404;
   color: #F00;
   text-align: center;
+}
+
+.calmHead {
+  color: #ff4bef;
 }

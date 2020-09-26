@@ -1,43 +1,155 @@
-import React, { useEffect, useContext } from 'react';
-import { Button, Container, Grid, Card, Segment, Icon } from "semantic-ui-react"
+import React, { useEffect, useContext, useState } from 'react';
+import { Button, Container, Grid, Card, Segment, Icon, Form } from "semantic-ui-react"
 import Tilt from 'react-tilt'
 import Scramble from 'react-scramble'
 import { StoreContext } from "../store/store.js";
 
-// TODO: This needs to be split into children components
-// TODO: Connect web3adapter views
 function Calm(props) {
   const { store, actions } = useContext(StoreContext);
+  const [staking, setStaking] = useState(0)
 
   useEffect(() => {
-    if(props.states.refresh) {
-      props.states.refresh(false);
+    if (store.wallet && !props.states.updateView) {
+      async function update() {
+        //await store.wallet.update()
+      }
+      update()
     }
-  }, props)
+    if (props.states.updateView) {
+      props.states.setUpdateView(false)
+    }
+  }, [props])
+
+  const handleStakeChange = (e) => {
+    setStaking(e.target.value)
+  }
 
   const stakingDisp = () => {
-    if (!store.wallet.balances["unipool"]) {
+    if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
       return (
-        <></>
+        <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="green" name="save outline" />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <h3>Staking();</h3>
+              <p>Start staking and get rewards</p>
+              <p>Available: {store.wallet.balances["lp"]}</p>
+              <Form>
+                <Form.Field>
+                  <p>Amount to stake</p>
+                  <input onChange={(e) => handleStakeChange(e)} />
+                </Form.Field>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Button inverted onClick={() => store.wallet.stake(staking)} color="green">{">"}Start</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
       )
     }
-    else if (!store.wallet.balances["lp"])
-    return (
-      <></>
-    )
-    return (
-      <></>
-    )
+    else if (store.wallet.balances["lp"] == "0") {
+      return (
+        <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="green" name="save outline" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+            <h3>Staking();</h3>
+            <p>Staking: {parseFloat(store.wallet.balances["uni"]).toFixed(6)}</p>
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
+      )
+    }
+    else {
+      return (
+        <Segment.Group textAligned="center" className="Term">
+        <Grid.Row className="pad" centered>
+          <Grid.Column textAlign="center">
+            <Icon size="massive" color="green" name="save outline" />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="pad" centered>
+          <Grid.Column textAlign="center">
+            <h3>Staking();</h3>
+            <p>Add more to your stake</p>
+            <p>Staking: {parseFloat(store.wallet.balances["uni"]).toFixed(6)}</p>
+            <p>Available: {parseFloat(store.wallet.balances["lp"]).toFixed(6)}</p>
+            <Form>
+              <Form.Field>
+                <p>Amount to add</p>
+                <input onChange={(e) => handleStakeChange(e)} />
+              </Form.Field>
+            </Form>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="pad" centered>
+          <Grid.Column textAlign="center">
+            <Button inverted onClick={() => store.wallet.stake(staking)} color="green">{">"}Add</Button>
+          </Grid.Column>
+        </Grid.Row>
+      </Segment.Group>
+      )
+    }
   }
 
   const rewardDisp = () => {
-    if (!store.wallet.reward) {
+    if (!store.wallet.rewards || store.wallet.rewards == 0) {
       return (
-        <></>
+        <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="blue" name="sync" />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <p>No Rewards to claim</p>
+
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
       )
     }
     return (
-      <></>
+      <Segment.Group textAligned="center" className="Term">
+        <Grid.Row className="pad" centered>
+          <Grid.Column textAlign="center">
+            <Icon size="massive" color="blue" name="sync" />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="pad" centered>
+          <Grid.Column textAlign="center">
+            <h3>Rewards();</h3>
+            <p></p>
+            <p>{parseFloat(store.wallet.rewards).toFixed(6)} $COIN</p>
+            <p>{(parseFloat(store.wallet.rewards) * 100).toFixed(6)} $CRED</p>
+            <p></p>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="pad" centered={true}>
+          <Grid.Column textAlign="center">
+            <Button inverted onClick={() => store.wallet.collectReward()} color="blue">{">"}Collect</Button>
+          </Grid.Column>
+        </Grid.Row>
+      </Segment.Group>
     )
 
   }
@@ -61,118 +173,90 @@ function Calm(props) {
                     <p>Wallet must be connected!</p>
                   </Grid.Column>
                 </Grid.Row>
-                </Segment.Group>
+              </Segment.Group>
             </Tilt>
           </Card>
         </Grid.Row>
       )
-}
-return (
-          <Grid.Row centered={true} columns={2}>
-            <Grid.Column width={4} centered={true}>
-              <Container>
-              <Card textAligned="center" className="outerCard" centered={true}>
-                <Tilt className="Tilt">
+    }
+    return (
+      <>
+      <Grid.Row centered={true} columns={2}>
+        <Grid.Column width={4} centered="true">
+          <Container fluid>
+            <Card textAligned="center" className="outerCard" centered={true}>
+              <Tilt className="Tilt">
+                {rewardDisp()}
+              </Tilt>
+            </Card>
+          </Container>
+        </Grid.Column>
 
-                  <Segment.Group textAligned="center" className="Term">
-                    <Grid.Row className="pad" centered>
-                      <Grid.Column textAlign="center">
-                        <Icon size="massive" name="sync" />
-                      </Grid.Column>
-                    </Grid.Row>
+        <Grid.Column width={4} centered="true">
+          <Card textAligned="center" className="outerCard" centered>
+            <Tilt className="Tilt">
+              {stakingDisp()}
+            </Tilt>
+          </Card>
+        </Grid.Column>
 
-                    <Grid.Row className="pad" centered>
-                      <Grid.Column textAlign="center">
-                        <h3>Rewards();</h3>
-                        <p>-------------------</p>
-Collect your staking rewards
-----------
-<p></p>
-Value: 0
-<p></p>
-----------
-</Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row className="pad" centered={true}>
-                      <Grid.Column textAlign="center">
-                        <Button inverted color="green">{">"}Collect</Button>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Segment.Group>
-
-                </Tilt>
-              </Card>
-              </Container>
-            </Grid.Column>
-
-            <Grid.Column width={4} centered={true}>
-              <Card textAligned="center" className="outerCard" centered>
-                <Tilt className="Tilt">
-
-                  <Segment.Group textAligned="center" className="Term">
-                    <Grid.Row className="pad" centered>
-                      <Grid.Column textAlign="center">
-                        <Icon size="massive" name="save outline" />
-                      </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row className="pad" centered>
-                      <Grid.Column textAlign="center">
-                        <h3>Staking();</h3>
-                        <p>-------------------</p>
-Start staking and get rewards
-----------
-<p></p>
-Balance: 0
-<p></p>
-----------
-</Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row className="pad" centered>
-                      <Grid.Column textAlign="center">
-                        <Button inverted color="green">{">"}Start</Button>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Segment.Group>
-
-                </Tilt>
-              </Card>
+        <Grid.Column width={4} centered="true">
+          <Card textAligned="center" className="outerCard" centered>
+            <Tilt className="Tilt">
+            <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="red" name="sign-out" />
             </Grid.Column>
           </Grid.Row>
-)
-}
-return (
-          <Container fluid>
-            <Grid className="mainView" verticalAlign="middle" stackable={true} divided='vertically'>
-              <Grid.Row className="pad" centered>
-                <Tilt className="Tilt">
-                  <Segment textAligned="center">
-                    <h1>
-                      <Scramble
-                        autoStart
-                        text="C.A.L.M PROTOCOL"
-                        steps={[
-                          {
-                            roll: 10,
-                            action: '+',
-                            type: 'all',
-                          },
-                          {
-                            action: '-',
-                            type: 'forward',
-                          },
-                        ]}
-                      />
-                    </h1>
-                    <p>MOAR INFO</p>
-                  </Segment>
-                </Tilt>
-              </Grid.Row>
-              {statDisp()}
-            </Grid>
-          </Container>
-);
+
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <h3>Exit();</h3>
+              <p>Leave pool with rewards and stake</p>
+              <Button inverted color="red" onClick={() => store.wallet.exit()}>Exit</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
+            </Tilt>
+          </Card>
+        </Grid.Column>
+      </Grid.Row>
+</>
+      
+    )
+  }
+  return (
+    <Container fluid>
+      <Grid className="mainView" verticalAlign="middle" stackable={true} divided='vertically'>
+        <Grid.Row className="pad" centered>
+          <Tilt className="Tilt">
+            <Segment className="calmHead" textAligned="center">
+              <h1>
+                <Scramble
+                  autoStart
+                  text="C.A.L.M PROTOCOL"
+                  steps={[
+                    {
+                      roll: 10,
+                      action: '+',
+                      type: 'all',
+                    },
+                    {
+                      action: '-',
+                      type: 'forward',
+                    },
+                  ]}
+                />
+              </h1>
+              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + parseFloat(store.wallet.balances["coin"]).toFixed(6)) : ""}</p>
+              <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + parseFloat(store.wallet.balances["cred"]).toFixed(6)) : ""}</p>
+            </Segment>
+          </Tilt>
+        </Grid.Row>
+        {statDisp()}
+      </Grid>
+    </Container>
+  );
 }
 export default Calm;
