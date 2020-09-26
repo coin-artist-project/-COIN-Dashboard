@@ -88,7 +88,9 @@ class Web3Adapter {
 
   async approval() {
     try {
-      const maxApproval = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+      let maxApproval = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+      maxApproval = await this.web3.utils.toWei(maxApproval, "ether")
+
       await this.lp.methods.approve(unipoolAddr, maxApproval).send({ from: this.selectedAddress });
     }
     catch (ex) {
@@ -166,6 +168,7 @@ class Web3Adapter {
       await this.getEarned()
     }
     catch (ex) {
+      console.log(ex)
       this.cb.call(this, "error", String("Could not get balances"))
     }
   }
