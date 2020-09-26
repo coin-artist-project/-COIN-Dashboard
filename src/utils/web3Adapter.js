@@ -106,7 +106,6 @@ class Web3Adapter {
       await this.unipool.methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
 
       await this.getBalances();
-      await this.getEarned();
 
       this.cb.call(this, "success")
     }
@@ -145,7 +144,6 @@ class Web3Adapter {
     try {
       await this.unipool.methods.exit().send({ from: this.selectedAddress });
       await this.getBalances();
-      await this.getEarned();
       this.cb.call(this, "success")
     }
     catch (ex) {
@@ -161,7 +159,6 @@ class Web3Adapter {
       await this.update()
       this.cb.call(this, "wait", "Updating balances")
       await this.getBalances();
-      await this.getEarned();
       this.cb.call(this, "success")
     }
     catch (ex) {
@@ -192,12 +189,13 @@ class Web3Adapter {
       let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
       await this.getStats()
+      if (uni && uni != 0 ) {
+        await this.getEarned();
+      }
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not get balances"));
     }
-
-    await this.getEarned();
   }
 
   async getStats() {
@@ -221,7 +219,6 @@ class Web3Adapter {
     this.cb.call(this, "wait", "Updating...")
     try {
       await this.getBalances();
-      await this.getEarned();
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not update"))
