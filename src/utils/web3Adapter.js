@@ -2,19 +2,25 @@ const Web3 = require('web3');
 const uniABI = require("./uniABI.js");
 const erc20ABI = require("./erc20ABI.js")
 
-let unipoolAddr, coinAddr, lpAddr, credAddr;
-if (window.ethereum.networkVersion == "1") {
-  unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
-  lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
-  coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
-  credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
+var unipoolAddr, coinAddr, lpAddr, credAddr;
+const setupContractAddresses = () => {
+  if (window.ethereum.networkVersion == "1") {
+    unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
+    lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
+    coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
+    credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
+  }
+  else {
+    unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
+    lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
+    coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
+    credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
+  }
 }
-else {
-  unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
-  lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
-  coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
-  credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
-}
+
+// Set them on page load, but again on web3 adapter setup
+setupContractAddresses();
+
 class Web3Adapter {
   constructor(provider, cb) {
     this.cb = cb;
@@ -45,10 +51,17 @@ class Web3Adapter {
     this.cb.call(this, "wait", "Initializing Ethereum Network")
     try {
       this.web3 = new Web3(this.provider);
+
+      // Make sure contracts are set up before init'ing
+      setupContractAddresses();
+
+      // Init all contracts
       this.unipool = new this.web3.eth.Contract(this.uniABI, unipoolAddr);
       this.lp = new this.web3.eth.Contract(this.erc20ABI, lpAddr);
       this.coin = new this.web3.eth.Contract(this.erc20ABI, coinAddr);
       this.cred = new this.web3.eth.Contract(this.erc20ABI, credAddr);
+
+      // Get address, balances, and load the page
       this.accounts = await this.web3.eth.getAccounts();
       this.selectedAddress = this.accounts[0];
       await this.getBalances();
@@ -64,21 +77,34 @@ class Web3Adapter {
   async stake(amount) {
     this.cb.call(this, "wait", "Staking...")
     try {
-      let weiAmount = await this.web3.utils.toWei(String(amount), "ether");
+      // Get allowance to see if approved, convert to ether denomination
       let allowance = await this.lp.methods.allowance(this.selectedAddress, unipoolAddr).call({ from: this.selectedAddress });
-      allowance = await this.web3.utils.toWei(String(allowance), "ether");
-      let amt = new this.BN(weiAmount)
-      if (!amt.lt(allowance)) {
+      allowance = await this.web3.utils.fromWei(String(allowance), "ether");
+
+      // Convert both to comparable types
+      let amountBn = new this.BN(amount);
+      let allowanceBn = new this.BN(allowance)
+
+      // If allowance is below amount to stake, approve
+      if (allowanceBn.lt(amountBn)) {
         this.cb.call(this, "wait", "Approving...")
         await this.approval();
         this.cb.call(this, "wait", "Staking...")
       }
-      if (amt.lt(String(this.balances["lp"]))) {
-        throw "Balance too low";
+
+      // If amount to stake is less than LP, warn balance is too low
+      // NOTE - comparing ether denomination in both cases
+      if (amountBn.lt(String(this.balances["lp"]))) {
+        this.cb.call(this, "error", String("Your available LP token balance is too low."))
+        return;
       }
+
+      let weiAmount = await this.web3.utils.toWei(String(amount), "ether");
       await this.unipool.methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
+
       await this.getBalances();
       await this.getEarned();
+
       this.cb.call(this, "success")
     }
     catch (ex) {
@@ -143,7 +169,7 @@ class Web3Adapter {
   // view rewards earned
   async getEarned() {
     try {
-      let rewards = await this.unipool.methods.earned(this.selectedAddress).call({ from: this.selectedAddress });
+      let rewards = await this.unipool.methods.earned(this.selectedAddress).call();
       this.rewards = await this.web3.utils.fromWei(rewards, "ether").toString()
     }
     catch (ex) {
@@ -154,19 +180,20 @@ class Web3Adapter {
   // view staked
   async getBalances() {
     try {
-      let lp = await this.lp.methods.balanceOf(this.selectedAddress).call({ from: this.selectedAddress });
+      let lp = await this.lp.methods.balanceOf(this.selectedAddress).call();
       this.balances["lp"] = await this.web3.utils.fromWei(String(lp), "ether")
-      let coin = await this.coin.methods.balanceOf(this.selectedAddress).call({ from: this.selectedAddress });
+      let coin = await this.coin.methods.balanceOf(this.selectedAddress).call();
       this.balances["coin"] = await this.web3.utils.fromWei(String(coin), "ether")
-      let uni = await this.unipool.methods.balanceOf(this.selectedAddress).call({ from: this.selectedAddress });
+      let uni = await this.unipool.methods.balanceOf(this.selectedAddress).call();
       this.balances["uni"] = await this.web3.utils.fromWei(String(uni), "ether")
-      let cred = await this.cred.methods.balanceOf(this.selectedAddress).call({ from: this.selectedAddress });
+      let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
-      await this.getEarned()
     }
     catch (ex) {
-      this.cb.call(this, "error", String("Could not get balances"))
+      this.cb.call(this, "error", String("Could not get balances"));
     }
+
+    await this.getEarned();
   }
 
   async update() {

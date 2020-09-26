@@ -24,8 +24,44 @@ function Calm(props) {
     setStaking(e.target.value)
   }
 
+  const submitStake = () => {
+    if (staking) {
+      store.wallet.stake(staking);
+    } else {
+      store.wallet.stake(store.wallet.balances["lp"]);
+    }
+  };
+
   const stakingDisp = () => {
-    if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
+    if (
+      (!store.wallet.balances["uni"] && !store.wallet.balances["lp"]) ||
+      (store.wallet.balances["lp"] == "0" && store.wallet.balances["uni"] === "0")
+    )
+    {
+      return (
+        <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="green" name="save outline" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+            <h3>Staking();</h3>
+            <p>Add liquidity to COIN-ETH to join the farm</p>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <a href="https://uniswap.info/pair/0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7" target="_blank">
+                <Button inverted color="green">{">"}Go to Uniswap</Button>
+              </a>
+            </Grid.Column>
+          </Grid.Row>
+        </Segment.Group>
+      )
+    }
+    else if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
       return (
         <Segment.Group textAligned="center" className="Term">
           <Grid.Row className="pad" centered>
@@ -42,7 +78,7 @@ function Calm(props) {
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
-                  <input onChange={(e) => handleStakeChange(e)} />
+                  <input onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
                 </Form.Field>
               </Form>
             </Grid.Column>
@@ -50,7 +86,7 @@ function Calm(props) {
 
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
-              <Button inverted onClick={() => store.wallet.stake(staking)} color="green">{">"}Start</Button>
+              <Button inverted onClick={submitStake.bind(this)} color="green">{">"}Start</Button>
             </Grid.Column>
           </Grid.Row>
         </Segment.Group>
@@ -91,7 +127,7 @@ function Calm(props) {
             <Form>
               <Form.Field>
                 <p>Amount to add</p>
-                <input onChange={(e) => handleStakeChange(e)} />
+                <input onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
               </Form.Field>
             </Form>
           </Grid.Column>
@@ -99,7 +135,7 @@ function Calm(props) {
 
         <Grid.Row className="pad" centered>
           <Grid.Column textAlign="center">
-            <Button inverted onClick={() => store.wallet.stake(staking)} color="green">{">"}Add</Button>
+            <Button inverted onClick={submitStake.bind(this)} color="green">{">"}Add</Button>
           </Grid.Column>
         </Grid.Row>
       </Segment.Group>
