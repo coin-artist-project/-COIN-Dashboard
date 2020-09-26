@@ -76,6 +76,7 @@ class Web3Adapter {
       if (amt.lt(String(this.balances["lp"]))) {
         throw "Balance too low";
       }
+      console.log(weiAmount)
       await this.unipool.methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
       await this.getBalances();
       await this.getEarned();

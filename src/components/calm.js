@@ -38,7 +38,7 @@ function Calm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>Start staking and get rewards</p>
-              <p>Available: {parseFloat(store.wallet.balances["lp"]).toFixed(6)}</p>
+              <p>Available: {((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
@@ -67,7 +67,7 @@ function Calm(props) {
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
             <h3>Staking();</h3>
-            <p>Staking: {parseFloat(store.wallet.balances["uni"]).toFixed(6)}</p>
+            <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
             </Grid.Column>
           </Grid.Row>
         </Segment.Group>
@@ -86,8 +86,8 @@ function Calm(props) {
           <Grid.Column textAlign="center">
             <h3>Staking();</h3>
             <p>Add more to your stake</p>
-            <p>Staking: {parseFloat(store.wallet.balances["uni"]).toFixed(6)}</p>
-            <p>Available: {parseFloat(store.wallet.balances["lp"]).toFixed(6)}</p>
+            <p>Staking: { ((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
+            <p>Available: { ((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
             <Form>
               <Form.Field>
                 <p>Amount to add</p>
@@ -138,8 +138,8 @@ function Calm(props) {
           <Grid.Column textAlign="center">
             <h3>Rewards();</h3>
             <p></p>
-            <p>{parseFloat(store.wallet.rewards).toFixed(6)} $COIN</p>
-            <p>{(parseFloat(store.wallet.rewards) * 100).toFixed(6)} $CRED</p>
+            <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} $COIN</p>
+            <p>{((Math.floor(parseFloat(store.wallet.rewards * 100) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
             <p></p>
           </Grid.Column>
         </Grid.Row>
@@ -249,8 +249,8 @@ function Calm(props) {
                   ]}
                 />
               </h1>
-              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + parseFloat(store.wallet.balances["coin"]).toFixed(6)) : ""}</p>
-              <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + parseFloat(store.wallet.balances["cred"]).toFixed(6)) : ""}</p>
+              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6))  : ""}</p>
+              <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + ((Math.floor(parseFloat(store.wallet.balances["cred"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
             </Segment>
           </Tilt>
         </Grid.Row>
