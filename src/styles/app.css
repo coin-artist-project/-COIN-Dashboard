@@ -13,6 +13,10 @@
     cursor: url('../images/cursor3.ico') 2 2, none !important;
 
 }
+
+.p {
+  color: #FFF !important;
+}
 #page-wrap {
   overflow: auto !important;
   text-align: center;
@@ -46,7 +50,7 @@
   width: 36px;
   height: 30px;
   left: 36px;
-  top: 36px;
+  top: 60px;
   display: block;
 }
 .bm-burger-button-hidden {
@@ -204,4 +208,19 @@ h1, h2, h3, h4, h5, p, code {
   border-radius: 0;
   box-shadow: 0 0 0 0 transparent inset;
   transition: color .1s ease,border-color .1s ease;
+}
+
+.ui.centered.grid > .column:not(.aligned):not(.justified):not(.row), .ui.centered.grid > .row > .column:not(.aligned):not(.justified), .ui.grid .centered.row > .column:not(.aligned):not(.justified) {
+  text-align: unset !important;
+}
+
+.ui.menu {
+color: #FFF !important;
+background: #000000bd !important;
+border: unset !important;
+box-shadow: unset !important;
+}
+
+.ui.menu .item {
+  color: #FF00FF !important;
 }

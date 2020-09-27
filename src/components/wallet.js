@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Icon, Segment, Button } from "semantic-ui-react";
 
 import Web3Modal from "web3modal";
@@ -7,9 +7,11 @@ import { StoreContext } from "../store/store.js";
 
 function Wallet(props) {
     const { store, actions } = useContext(StoreContext);
-    const [ updateView, setUpdateView ] = useState(0)
 
     const connect = async () => {
+        if (!window.ethereum) {
+            return;
+        }
         const providerOptions = {};
         const web3Modal = new Web3Modal({
             network: '*',
@@ -67,9 +69,7 @@ function Wallet(props) {
     }
     return (
         <>
-        <Segment floated="right" compact={true}>
         { status() }
-        </Segment>
         </>
     )
 }

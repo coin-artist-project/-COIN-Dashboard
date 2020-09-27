@@ -8,7 +8,7 @@ function Header() {
     <GlitchClip iterationCount="3">
       <Image className="header" centered src={Img} />
     </GlitchClip>
-    );
+  );
 }
 
 export default Header;

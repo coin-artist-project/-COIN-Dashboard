@@ -189,7 +189,7 @@ class Web3Adapter {
       let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
       await this.getStats()
-      if (uni && uni != 0 ) {
+      if (uni && uni != 0) {
         await this.getEarned();
       }
     }
@@ -207,10 +207,10 @@ class Web3Adapter {
       let uniSupply = await this.unipool.methods.totalSupply().call();
       let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / uniSupply) * 100
       this.stats["userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-      let earnRate = userStaked * (10000 /30) / 100;
+      let earnRate = userStaked * (10000 / 30) / 100;
       this.stats["earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
     }
-    catch(ex) {
+    catch (ex) {
       this.cb.call(this, "error", String("Could not get stats"));
     }
   }

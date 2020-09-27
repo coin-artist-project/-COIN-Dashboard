@@ -35,7 +35,7 @@ function Calm(props) {
   const refresh = () => {
     if (store.wallet) {
       return (
-        <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh"/>Update</Button>
+        <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh" />Update</Button>
       )
     }
     return (
@@ -141,8 +141,8 @@ function Calm(props) {
                 <Form.Field>
                   <p>Amount to stake</p>
                   <Input fluid>
-                  <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
-                  <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
+                    <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
                   </Input>
                 </Form.Field>
               </Form>
@@ -197,8 +197,8 @@ function Calm(props) {
                 <Form.Field>
                   <p>Amount to add</p>
                   <Input fluid>
-                  <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]}/>
-                  <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
+                    <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
                   </Input>
 
                 </Form.Field>
@@ -342,10 +342,11 @@ function Calm(props) {
                   ]}
                 />
               </h1>
-              <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Total Supply Staked: " + ((Math.floor(parseFloat(store.wallet.stats["totalStaked"]) * 1000000)) / 1000000).toFixed(2) + "%") : ""}</p>
+              <h4>Coin Artist Liquidity Mining</h4>
+              <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Total Liquidity Staked: " + ((Math.floor(parseFloat(store.wallet.stats["totalStaked"]) * 1000000)) / 1000000).toFixed(2) + "%") : ""}</p>
               <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
               <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + ((Math.floor(parseFloat(store.wallet.balances["cred"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
-                {refresh()}
+              {refresh()}
             </Segment>
           </Tilt>
         </Grid.Row>

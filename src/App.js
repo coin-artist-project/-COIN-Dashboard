@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Loader, Grid, Dimmer, Rail } from "semantic-ui-react";
+import React, { useEffect, useState } from 'react';
+import { Container, Loader, Grid, Dimmer, Rail, Menu } from "semantic-ui-react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,6 +15,7 @@ import Header from "./components/header.js"
 import BurgerMenu from "./components/menu.js";
 import Home from "./components/home.js";
 import Calm from "./components/calm.js";
+import MarketInfo from "./components/marketInfo.js"
 
 function App() {
   const [isLoading, setLoading] = useState(false);
@@ -28,33 +29,44 @@ function App() {
     setError: setError,
     updateView: updateView,
     setUpdateView: setUpdateView,
-}
-// TODO: HOME
-//<Route exact path="/" component={Home} />
-//<Route exact path="/calm" component={() => <Calm states={propStates}/>} />
+  }
+
+  /*
+          <Rail internal dividing={true} position='right'>
+            <Wallet states={propStates} />
+          </Rail>
+  */
   return (
     <Container className="App">
       <Grid stackable={true} className="App crt">
-      <Header/>
-      <Store>
-      <Rail internal dividing={true} position='right'>
-      <Wallet states={propStates}/>  
-        </Rail>
-        <Router>
+        <Header />
+        <Store>
+
+          <Router>
           <div id="outer-container">
-        <BurgerMenu className="hellow" pageWrapId={ "page-wrap" } outerContainerId={ "outer-container" } />
-        <div id="page-wrap">
-        <Dimmer page active={Boolean(isLoading)}>
-                <Loader>{String(isLoading)}</Loader>
-          </Dimmer>
-          <Errors states={propStates} />
-        <Switch>
-          <Route exact path="/" component={() => <Calm states={propStates}/>} />
-        </Switch>
-        </div>
-        </div>
-        </Router>
-      </Store>
+
+              <BurgerMenu className="hellow" pageWrapId={"page-wrap"} outerContainerId={"outer-container"} />
+              <div id="page-wrap">
+              <Grid.Row centered={true}>
+          <Menu compact>
+          <Menu.Item>
+            <Wallet states={propStates} />
+            </Menu.Item>
+          <MarketInfo/>
+          </Menu>
+          </Grid.Row>
+                <Dimmer page active={Boolean(isLoading)}>
+                  <Loader>{String(isLoading)}</Loader>
+                </Dimmer>
+                <Errors states={propStates} />
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/calm" component={() => <Calm states={propStates} />} />
+                </Switch>
+              </div>
+            </div>
+          </Router>
+        </Store>
       </Grid>
     </Container>
   );

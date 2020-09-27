@@ -19,29 +19,18 @@ class BurgerMenu extends Component {
         this.setState({ menuOpen: state.isOpen });
     }
     render() {
-        /*
-            return (
-                <Menu isOpen={this.state.menuOpen} burgerButtonClassName={ this.state.menuOpen ? "bm-burger-button-hidden" : "bm-burger-button" }  onStateChange={(state) => this.handleStateChange(state)}>
-                        <Image className="menuLogo" centered={true} src={PT} size="small" />
-
-                        <Link id="home" onClick={() => this.closeMenu()} className="menu-item" to={"/"}>
-                        {">"} Home
-                </Link>
-                        <Link id="calm" onClick={() => this.closeMenu()} className="menu-item" to={"/calm"}>
-                        {">"} C.A.L.M
-                </Link>
-                    </Menu>
-            )
-        }
-        */
-       return (
-        <Menu isOpen={this.state.menuOpen} burgerButtonClassName={ this.state.menuOpen ? "bm-burger-button-hidden" : "bm-burger-button" }  onStateChange={(state) => this.handleStateChange(state)}>
+        return (
+            <Menu isOpen={this.state.menuOpen} burgerButtonClassName={this.state.menuOpen ? "bm-burger-button-hidden" : "bm-burger-button"} onStateChange={(state) => this.handleStateChange(state)}>
                 <Image className="menuLogo" centered={true} src={PT} size="small" />
-                <Link id="calm" onClick={() => this.closeMenu()} className="menu-item" to={"/"}>
-                {">"} C.A.L.M
-        </Link>
+
+                <Link id="home" onClick={() => this.closeMenu()} className="menu-item" to={"/"}>
+                    {">"} Home
+                </Link>
+                <Link id="calm" onClick={() => this.closeMenu()} className="menu-item" to={"/calm"}>
+                    {">"} C.A.L.M
+                </Link>
             </Menu>
-    )
-}
+        )
     }
-    export default BurgerMenu;
+}
+export default BurgerMenu;
