@@ -140,7 +140,7 @@ function Calm(props) {
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
-                  <Input>
+                  <Input fluid>
                   <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
                   <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
                   </Input>
@@ -196,7 +196,7 @@ function Calm(props) {
               <Form>
                 <Form.Field>
                   <p>Amount to add</p>
-                  <Input>
+                  <Input fluid>
                   <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]}/>
                   <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
                   </Input>
