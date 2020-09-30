@@ -2,25 +2,6 @@ const Web3 = require('web3');
 const uniABI = require("./uniABI.js");
 const erc20ABI = require("./erc20ABI.js")
 
-var unipoolAddr, coinAddr, lpAddr, credAddr;
-const setupContractAddresses = () => {
-  if (window.ethereum.networkVersion == "1") {
-    unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
-    lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
-    coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
-    credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
-  }
-  else {
-    unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
-    lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
-    coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
-    credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
-  }
-}
-
-// Set them on page load, but again on web3 adapter setup
-setupContractAddresses();
-
 class Web3Adapter {
   constructor(provider, cb) {
     this.cb = cb;
@@ -48,13 +29,27 @@ class Web3Adapter {
     this.selectedAddress = false;
   }
 
+  setupContractAddresses = () => {
+    if (window && window.ethereum && window.ethereum.networkVersion == "1") {
+      this.unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
+      this.lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
+      this.coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
+      this.credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
+    }
+    else {
+      this.unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
+      this.lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
+      this.coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
+      this.credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
+    }
+  }
   async init() {
     this.cb.call(this, "wait", "Initializing Ethereum Network")
     try {
       this.web3 = new Web3(this.provider);
 
       // Make sure contracts are set up before init'ing
-      setupContractAddresses();
+      this.setupContractAddresses();
 
       // Init all contracts
       this.unipool = new this.web3.eth.Contract(this.uniABI, unipoolAddr);
