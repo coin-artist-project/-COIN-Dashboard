@@ -49,6 +49,9 @@ class Web3Adapter {
       this.web3 = new Web3(this.provider);
 
       // Make sure contracts are set up before init'ing
+      if (!window || !window.ethereum) {
+        throw "No web3 detected"
+      }
       this.setupContractAddresses();
 
       // Init all contracts
