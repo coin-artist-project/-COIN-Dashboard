@@ -79,7 +79,7 @@ class Web3Adapter {
     this.cb.call(this, "wait", "Staking...")
     try {
       // Get allowance to see if approved, convert to ether denomination
-      let allowance = await this.lp.methods.allowance(this.selectedAddress, unipoolAddr).call({ from: this.selectedAddress });
+      let allowance = await this.lp.methods.allowance(this.selectedAddress, this.unipoolAddr).call({ from: this.selectedAddress });
       allowance = await this.web3.utils.fromWei(String(allowance), "ether");
 
       // Convert both to comparable types
@@ -115,7 +115,7 @@ class Web3Adapter {
   async approval() {
     try {
       let maxApproval = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
-      await this.lp.methods.approve(unipoolAddr, maxApproval).send({ from: this.selectedAddress });
+      await this.lp.methods.approve(this.unipoolAddr, maxApproval).send({ from: this.selectedAddress });
     }
     catch (ex) {
       throw String(ex)
@@ -199,7 +199,7 @@ class Web3Adapter {
   async getStats() {
     try {
       let supply = await this.lp.methods.totalSupply().call();
-      let staked = await this.lp.methods.balanceOf(unipoolAddr).call();
+      let staked = await this.lp.methods.balanceOf(this.unipoolAddr).call();
       let lpStaked = (staked / supply) * 100
       this.stats["totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
       let uniSupply = await this.unipool.methods.totalSupply().call();
