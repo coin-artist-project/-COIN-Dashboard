@@ -55,10 +55,10 @@ class Web3Adapter {
       this.setupContractAddresses();
 
       // Init all contracts
-      this.unipool = new this.web3.eth.Contract(this.uniABI, unipoolAddr);
-      this.lp = new this.web3.eth.Contract(this.erc20ABI, lpAddr);
-      this.coin = new this.web3.eth.Contract(this.erc20ABI, coinAddr);
-      this.cred = new this.web3.eth.Contract(this.erc20ABI, credAddr);
+      this.unipool = new this.web3.eth.Contract(this.uniABI, this.unipoolAddr);
+      this.lp = new this.web3.eth.Contract(this.erc20ABI, this.lpAddr);
+      this.coin = new this.web3.eth.Contract(this.erc20ABI, this.coinAddr);
+      this.cred = new this.web3.eth.Contract(this.erc20ABI, this.credAddr);
 
       //BN
       this.BN = this.web3.utils.BN;
