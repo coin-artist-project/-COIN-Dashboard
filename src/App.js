@@ -9,13 +9,18 @@ import './styles/app.css';
 import './styles/crt.css'
 import { Store } from './store/store.js';
 
+import Home from "./components/home.js";
+import Calm from "./components/calm.js";
+import Charter from "./components/charter.js"
+import PuzzleInfo from "./components/puzzleInfo.js"
+import News from "./components/news.js"
+
 import Errors from "./components/errors.js"
 import Wallet from "./components/wallet.js"
 import Header from "./components/header.js"
 import BurgerMenu from "./components/menu.js";
-import Home from "./components/home.js";
-import Calm from "./components/calm.js";
 import MarketInfo from "./components/marketInfo.js"
+
 
 function App() {
   const [isLoading, setLoading] = useState(false);
@@ -62,6 +67,9 @@ function App() {
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/calm" component={() => <Calm states={propStates} />} />
+                  <Route exact path="/charter" component={Charter} />
+                  <Route exact path="/puzzleInfo" component={PuzzleInfo} />
+                  <Route exact path="/news" component={News} />
                 </Switch>
               </div>
             </div>

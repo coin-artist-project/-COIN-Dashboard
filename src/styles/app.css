@@ -224,3 +224,15 @@ box-shadow: unset !important;
 .ui.menu .item {
   color: #FF00FF !important;
 }
+
+.pGuide {
+  color: #00ff00 !important;
+}
+
+.pDetail {
+  color: #ff0000 !important;
+}
+
+.pVote {
+  color: #FF00FF !important;
+}

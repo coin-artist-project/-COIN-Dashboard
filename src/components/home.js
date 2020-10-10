@@ -3,7 +3,6 @@ import { Container, Grid, Segment, Icon, Image } from "semantic-ui-react"
 import Tilt from 'react-tilt'
 import Scramble from 'react-scramble'
 import Coin from '../images/coin.jpg'
-import { StoreContext } from "../store/store.js";
 
 function Home() {
 
