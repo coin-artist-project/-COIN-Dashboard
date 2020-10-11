@@ -38,13 +38,21 @@ function Home() {
                             <Grid>
                                 <Grid.Row centered={true} columns={4}>
                                     <Grid.Column>
-                                        <Icon name="twitter" size="huge" color="blue" />
+                                        <a href="https://twitter.com/coin_artist">
+                                            <Icon name="twitter" size="huge" color="blue" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="discord" size="huge" color="purple" />
+                                        <a href="https://discord.gg/NRcgpJR">
+                                            <Icon name="discord" size="huge" color="purple" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="telegram" size="huge" color="teal" />
+                                        <a href="https://t.me/coincred">
+                                            <Icon name="telegram" size="huge" color="teal" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="medium" size="huge" color="white" />
+                                        <a href="https://medium.com/@coin_artist_17801">
+                                            <Icon name="medium" size="huge" color="white" />
+                                        </a>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
