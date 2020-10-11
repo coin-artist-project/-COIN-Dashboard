@@ -103,7 +103,11 @@ Development of community based puzzles is subject to periodic testing and audit 
                     </Segment>
                 </Grid.Row>
 
-                <Grid.Row className="pad" centered>
+                <Grid.Row className="pad padTop" centered>
+                    <p></p>
+                    </Grid.Row>
+
+                <Grid.Row className="pad padTop" centered>
                     <Segment className="pVote" textAligned="center">
                         <h1>
                             Voting

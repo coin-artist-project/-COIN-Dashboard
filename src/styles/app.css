@@ -118,6 +118,10 @@ h1, h2, h3, h4, h5, p, code {
   padding: 5px !important;
 }
 
+.padTop > * {
+  padding-top: 20px !important;
+}
+
 .header {
   min-width: 101vw !important;
   min-height: 100vh !important;
@@ -126,6 +130,10 @@ h1, h2, h3, h4, h5, p, code {
 .glitch {
   position: absolute !important;
   z-index: -1000 !important;
+}
+
+.soon {
+  color: #9c9c9c !important;
 }
 
 .headerText {
@@ -230,7 +238,7 @@ box-shadow: unset !important;
 }
 
 .pDetail {
-  color: #ff0000 !important;
+  color: #fd2828 !important;
 }
 
 .pVote {

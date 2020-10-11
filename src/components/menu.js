@@ -41,8 +41,8 @@ class BurgerMenu extends Component {
                 <Link id="puzzleInfo" onClick={() => this.closeMenu()} className="menu-item" to={"/puzzleInfo"}>
                     {">"} Puzzle Dev Guide
                 </Link>
-                <Link id="roadmap" className="menu-item" >
-                    {">"} Roadmap (Coming soon)
+                <Link id="roadmap" className="menu-item soon" >
+                    <em>{">"} Roadmap (Coming soon)</em>
                 </Link>
             </Menu>
         )
