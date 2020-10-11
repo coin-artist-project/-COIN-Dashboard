@@ -4,7 +4,7 @@ import Tilt from 'react-tilt'
 import Scramble from 'react-scramble'
 
 // Puzzle rules display
-function PuzzleInfo(props) {
+function PuzzleInfo() {
     return (
         <Container fluid>
             <Grid className="mainView" verticalAlign="middle" stackable={true} divided='vertically'>

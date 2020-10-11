@@ -11,6 +11,7 @@ import { Store } from './store/store.js';
 
 import Home from "./components/home.js";
 import Calm from "./components/calm.js";
+import NFTFarm from "./components/nftFarm.js"
 import Charter from "./components/charter.js"
 import PuzzleInfo from "./components/puzzleInfo.js"
 import News from "./components/news.js"
@@ -67,6 +68,7 @@ function App() {
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/calm" component={() => <Calm states={propStates} />} />
+                  <Route exact path="/farm" component={NFTFarm} />
                   <Route exact path="/charter" component={Charter} />
                   <Route exact path="/puzzleInfo" component={PuzzleInfo} />
                   <Route exact path="/news" component={News} />
