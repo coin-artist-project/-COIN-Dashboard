@@ -48,8 +48,8 @@ function NFTFarm() {
                                     <Grid.Row className="pad" centered>
                                         <Grid.Column textAlign="center">
                                             <p>CRED/NEON</p>
-                                            <p>Initializing Failed</p>
-                                            <p>Try Again Later!</p>
+                                            <p>Initializing...</p>
+                                            <p>Check back soon!</p>
                                             <Progress error percent={68} active></Progress>
                                         </Grid.Column>
                                     </Grid.Row>
