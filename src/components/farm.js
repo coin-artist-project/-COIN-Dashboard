@@ -6,8 +6,7 @@ import { StoreContext } from "../store/store.js";
 import {
   Redirect
 } from 'react-router-dom'
-
-const farmList = ["coin", "cred"]
+import farmList from "../data/nftFarms.js";
 
 function Farm(props) {
   const { store, actions } = useContext(StoreContext);
@@ -16,8 +15,8 @@ function Farm(props) {
 
   useEffect(() => {
     if (props.match && props.match.params && props.match.params.id) {
-      if (farmList.indexOf(props.match.params.id) >= 0) {
-        setFarm(props.match.params.id.toUpperCase());
+      if (farmList.hasOwnProperty(props.match.params.id) >= 0) {
+        setFarm(farmList[props.match.params.id].coin);
       }
       else {
         setFarm("farm")

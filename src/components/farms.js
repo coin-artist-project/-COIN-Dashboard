@@ -4,8 +4,8 @@ import Tilt from 'react-tilt'
 import Scramble from 'react-scramble'
 import {
     Redirect
-} from 'react-router-dom'
-import coinNftFarms from '../data/nftFarmsCoins.js';
+} from 'react-router-dom';
+import farmList from "../data/nftFarms.js";
 
 // NFT Farm display
 function Farms(props) {
@@ -27,16 +27,25 @@ function Farms(props) {
         }
     }
 
-    const getSymbolImage = (symbol = "???") => {
+    const getFarmCoin = (farm) => {
+        let coin = "???";
+        if (farmList.hasOwnProperty(farm) && farmList[farm].hasOwnProperty('coin')) {
+            coin = farmList[farm].coin;
+        }
+        return coin;
+    }
+
+    const getFarmSymbol = (farm) => {
         let image = (<Icon size="massive" color="red" name="lock" />);
-        if (coinNftFarms.hasOwnProperty(symbol.toUpperCase()) && coinNftFarms[symbol.toUpperCase()].hasOwnProperty('image')) {
-            image = (<img src={coinNftFarms[symbol.toUpperCase()].image} width="128" height="128" />);
+        if (farmList.hasOwnProperty(farm) && farmList[farm].hasOwnProperty('image')) {
+            image = (<img src={farmList[farm].image} width="128" height="128" />);
         }
         return image;
     }
 
-    const upcomingFarm = (symbol = "???") => {
-        let image = getSymbolImage(symbol);
+    const upcomingFarm = (farm) => {
+        let symbol = getFarmCoin(farm);
+        let image = getFarmSymbol(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -64,8 +73,9 @@ function Farms(props) {
         );
     }
 
-    const prelaunchFarm = (symbol = "???") => {
-        let image = getSymbolImage(symbol);
+    const prelaunchFarm = (farm) => {
+        let symbol = getFarmCoin(farm);
+        let image = getFarmSymbol(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -81,7 +91,7 @@ function Farms(props) {
                                     <Grid.Column textAlign="center">
                                         <p>{symbol.toUpperCase()}</p>
                                         <p>Starting Soon!</p>
-                                        <Button color="blue" onClick={() => setFarmSelect(symbol.toLowerCase())} inverted icon>{">"}Join & Prepare</Button>
+                                        <Button color="blue" onClick={() => setFarmSelect(farm)} inverted icon>{">"}Join & Prepare</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Segment.Group>
@@ -92,8 +102,9 @@ function Farms(props) {
         );
     }
 
-    const launchedFarm = (symbol = "???") => {
-        let image = getSymbolImage(symbol);
+    const launchedFarm = (farm) => {
+        let symbol = getFarmCoin(farm);
+        let image = getFarmSymbol(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -109,7 +120,7 @@ function Farms(props) {
                                     <Grid.Column textAlign="center">
                                         <p>{symbol.toUpperCase()}</p>
                                         <p>Live Now!</p>
-                                        <Button color="blue" onClick={() => setFarmSelect(symbol.toLowerCase())} inverted icon>{">"}View</Button>
+                                        <Button color="blue" onClick={() => setFarmSelect(farm)} inverted icon>{">"}View</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Segment.Group>
@@ -152,11 +163,11 @@ function Farms(props) {
 
                 {/* Upcoming Farms */}
                 <Grid.Row centered={true} columns={3}>
-                    {upcomingFarm('COIN')}
+                    {upcomingFarm('coin-1')}
 
-                    {upcomingFarm('CRED')}
+                    {upcomingFarm('cred-1')}
 
-                    {upcomingFarm('TRSH')}
+                    {upcomingFarm('trsh-1')}
                 </Grid.Row>
             </Grid>
         )
