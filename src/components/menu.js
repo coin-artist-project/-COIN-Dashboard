@@ -29,6 +29,21 @@ class BurgerMenu extends Component {
                 <Link id="calm" onClick={() => this.closeMenu()} className="menu-item" to={"/calm"}>
                     {">"} C.A.L.M
                 </Link>
+                <Link id="farm" onClick={() => this.closeMenu()} className="menu-item" to={"/farm"}>
+                    {">"} NFT Farm
+                </Link>
+                <Link id="charter" onClick={() => this.closeMenu()} className="menu-item" to={"/charter"}>
+                    {">"} Charter
+                </Link>
+                <Link id="news" onClick={() => this.closeMenu()} className="menu-item" to={"/news"}>
+                    {">"} News
+                </Link>
+                <Link id="puzzleInfo" onClick={() => this.closeMenu()} className="menu-item" to={"/puzzleInfo"}>
+                    {">"} Puzzle Dev Guide
+                </Link>
+                <Link id="roadmap" className="menu-item soon" >
+                    <em>{">"} Roadmap (Coming soon)</em>
+                </Link>
             </Menu>
         )
     }
