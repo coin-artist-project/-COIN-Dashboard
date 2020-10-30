@@ -15,7 +15,15 @@ export default {
 		"image" : COIN,
 		"nftImage" : COIN1NFT,
 		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/14914",
-		"contract" : {
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"coinContract" : {
 			"mainnet" : "",
 			"rinkeby" : ""
 		}
@@ -25,7 +33,15 @@ export default {
 		"image" : CRED,
 		"nftImage" : CRED1NFT,
 		"opensea" : "https://opensea.io/assets/0x22adcaf1d6b5213a76bfddab6d4d38c25ce7c029/73",
-		"contract" : {
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"coinContract" : {
 			"mainnet" : "",
 			"rinkeby" : ""
 		}
@@ -35,7 +51,15 @@ export default {
 		"image" : TRSH,
 		"nftImage" : TRSH1NFT,
 		"opensea" : "https://opensea.io/assets/0x1702bea2755d076adf737b785926b086eff36f75/212",
-		"contract" : {
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"coinContract" : {
 			"mainnet" : "",
 			"rinkeby" : ""
 		}
