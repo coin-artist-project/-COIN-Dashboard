@@ -30,7 +30,7 @@ class BurgerMenu extends Component {
                     {">"} C.A.L.M
                 </Link>
                 <Link id="farm" onClick={() => this.closeMenu()} className="menu-item" to={"/farm"}>
-                    {">"} NFT Farm
+                    {">"} NFT Farms
                 </Link>
                 <Link id="charter" onClick={() => this.closeMenu()} className="menu-item" to={"/charter"}>
                     {">"} Charter
