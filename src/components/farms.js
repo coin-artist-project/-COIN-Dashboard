@@ -162,11 +162,11 @@ function Farms(props) {
 
                 {/* Upcoming Farms */}
                 <Grid.Row centered={true} columns={3}>
-                    {prelaunchFarm('coin-1')}
+                    {upcomingFarm('coin-1')}
 
-                    {prelaunchFarm('cred-1')}
+                    {upcomingFarm('cred-1')}
 
-                    {prelaunchFarm('trsh-1')}
+                    {upcomingFarm('trsh-1')}
                 </Grid.Row>
             </Grid>
         )
