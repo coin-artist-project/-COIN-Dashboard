@@ -41,6 +41,7 @@ class Web3Adapter {
       this.lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
       this.coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
       this.credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
+      this.trshAddr = ""
     }
   }
   async init() {
@@ -59,6 +60,7 @@ class Web3Adapter {
       this.lp = new this.web3.eth.Contract(this.erc20ABI, this.lpAddr);
       this.coin = new this.web3.eth.Contract(this.erc20ABI, this.coinAddr);
       this.cred = new this.web3.eth.Contract(this.erc20ABI, this.credAddr);
+  //    this.trsh = new this.web3.eth.Contract(this.erc20ABI, this.trshAddr);
 
       //BN
       this.BN = this.web3.utils.BN;
@@ -186,6 +188,8 @@ class Web3Adapter {
       this.balances["uni"] = await this.web3.utils.fromWei(String(uni), "ether")
       let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
+//      let trsh = await this.trsh.methods.balanceOf(this.selectedAddress).call();
+//      this.balances["trsh"] = await this.web3.utils.fromWei(String(trsh), "ether")
       await this.getStats()
       if (uni && uni != 0) {
         await this.getEarned();
@@ -223,6 +227,8 @@ class Web3Adapter {
     }
     this.cb.call(this, "success")
   }
+
+
 
 }
 export default Web3Adapter;

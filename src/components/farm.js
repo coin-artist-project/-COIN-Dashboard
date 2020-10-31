@@ -348,7 +348,7 @@ function Farm(props) {
                     ]}
                   />
                 </h1>
-                <p>{store.wallet && store.wallet.balances[farm] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farm]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                <p>{store.wallet && store.wallet.balances[farm.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farm.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
                 {refresh()}
               </Segment>
             </Tilt>
