@@ -9,17 +9,19 @@ import {
 import farmList from "../data/nftFarms.js";
 
 function Farm(props) {
-  const { store, actions } = useContext(StoreContext);
+  const { store } = useContext(StoreContext);
   const [staking, setStaking] = useState(0)
   const [farm, setFarm] = useState("");
   const [farmId, setFarmId] = useState("");
   const [updateView, setUpdateView] = useState(false);
 
   useEffect(() => {
+    setFarm("");
+    setFarmId("");
     if (props.match && props.match.params && props.match.params.id) {
       if (farmList.hasOwnProperty(props.match.params.id) >= 0) {
-        setFarm(farmList[props.match.params.id].token);
         setFarmId(props.match.params.id)
+        setFarm(farmList[props.match.params.id].token);
       }
       else {
         setFarm("farm")
@@ -28,7 +30,7 @@ function Farm(props) {
     if (updateView) {
       setUpdateView(false)
     }
-  }, [props])
+  }, [props, updateView])
 
   const handleStakeChange = (e) => {
     setStaking(e.target.value)
@@ -120,12 +122,12 @@ function Farm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>----</p>
-              <p>Add liquidity to COIN-ETH to join the farm</p>
+              <p>Buy {farm} to start staking</p>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row className="pad" centered>
             <Grid.Column textAlign="center">
-              <a href="https://uniswap.info/pair/0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7" target="_blank">
+              <a href={"https://app.uniswap.org/#/swap?inputCurrency=" + (farmList && farmList[farmId] ? farmList[farmId]["tokenContract"]["mainnet"] : "")} target="_blank">
                 <Button inverted color="green">{">"}Go to Uniswap</Button>
               </a>
             </Grid.Column>

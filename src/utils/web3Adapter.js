@@ -198,9 +198,10 @@ class Web3Adapter {
         this.balances[farmId] = await this.web3.utils.fromWei(String(token), "ether");
         let farmToken = await this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call();
         this.balances[farmId + "-UNI"] = await this.web3.utils.fromWei(String(farmToken), "ether");
-        if (farmToken && farmToken != 0) {
+        //if (farmToken && farmToken != 0) {
           await this.getEarnedFarm(farmId);
-        }
+          //console.log(this[farmId + "-rewards"])
+        //}
       }
       await this.getStats()
       await this.getStatsFarm()
@@ -353,7 +354,7 @@ class Web3Adapter {
         let lpStaked = (staked / supply) * 100
         this.stats[farmId + "-totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
         let uniSupply = await this[farmId + "-UNI"].methods.totalSupply().call();
-        let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / uniSupply) * 100
+        let userStaked = (await this.web3.utils.toWei(this.balances[farmId + "-UNI"]) / uniSupply) * 100
         this.stats[farmId + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
         let earnRate = userStaked * (10000 / 30) / 100;
         this.stats[farmId + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);

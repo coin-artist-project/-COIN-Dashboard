@@ -16,7 +16,6 @@ function Farms(props) {
     }, [props]);
 
     const selectedFarm = () => {
-        // <Farm farmType={farmSelect}/>
         if (farmSelect !== "") {
             return (
                 <Redirect to={"/farm/" + farmSelect} farmType={farmSelect}/>
