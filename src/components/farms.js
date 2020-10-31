@@ -29,8 +29,8 @@ function Farms(props) {
 
     const getFarmCoin = (farm) => {
         let coin = "???";
-        if (farmList.hasOwnProperty(farm) && farmList[farm].hasOwnProperty('coin')) {
-            coin = farmList[farm].coin;
+        if (farmList.hasOwnProperty(farm) && farmList[farm].hasOwnProperty('token')) {
+            coin = farmList[farm].token;
         }
         return coin;
     }

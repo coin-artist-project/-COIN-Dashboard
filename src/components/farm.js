@@ -16,7 +16,7 @@ function Farm(props) {
   useEffect(() => {
     if (props.match && props.match.params && props.match.params.id) {
       if (farmList.hasOwnProperty(props.match.params.id) >= 0) {
-        setFarm(farmList[props.match.params.id].coin);
+        setFarm(farmList[props.match.params.id].token);
       }
       else {
         setFarm("farm")
