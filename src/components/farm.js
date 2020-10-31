@@ -377,7 +377,7 @@ function Farm(props) {
   } else if (fishTime && now >= fishTime) {
     timeInfo = (<p>{"Farm Ended " + timeConverter(fishTime)}</p>);
   } else if (store.wallet && store.wallet.stats && store.wallet.stats.hasOwnProperty(farmId + "-fishTime")) {
-    timeInfo = (<p>Farm Starting Shortly!</p>);
+    timeInfo = (<p>Farm Starts Nov 1 at 17:00 UTC</p>);
   }
 
   if (farm === "farm") {
