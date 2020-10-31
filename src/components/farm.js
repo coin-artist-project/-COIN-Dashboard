@@ -12,6 +12,7 @@ function Farm(props) {
   const { store } = useContext(StoreContext);
   const [staking, setStaking] = useState(0)
   const [farm, setFarm] = useState("");
+  const [shardToken, setShardToken] = useState("");
   const [farmId, setFarmId] = useState("");
   const [updateView, setUpdateView] = useState(false);
 
@@ -22,6 +23,7 @@ function Farm(props) {
       if (farmList.hasOwnProperty(props.match.params.id) >= 0) {
         setFarmId(props.match.params.id)
         setFarm(farmList[props.match.params.id].token);
+        setShardToken(farmList[props.match.params.id].shardToken);
       }
       else {
         setFarm("farm")
@@ -47,7 +49,7 @@ function Farm(props) {
   const refresh = () => {
     if (store.wallet) {
       return (
-        <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh" />Update</Button>
+        <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh" />Update Balances</Button>
       )
     }
     return (
@@ -249,6 +251,15 @@ function Farm(props) {
         </Segment.Group>
       )
     }
+
+    let percTotalSupply = "";
+    if (farmId && farmList.hasOwnProperty(farmId) && farmList[farmId].hasOwnProperty('totalSupply')) {
+      let totalSupply = farmList[farmId].totalSupply;
+      percTotalSupply = (
+        <p>% of NFT: {((Math.floor(parseFloat(store.wallet[farmId + "-rewards"]))) / totalSupply * 100).toFixed(4)}%</p>
+      );
+    }
+
     return (
       <Segment.Group textAligned="center" className="Term">
         <Grid.Row className="pad" centered>
@@ -261,7 +272,8 @@ function Farm(props) {
           <Grid.Column textAlign="center">
             <h3>Rewards();</h3>
             <p>----</p>
-            <p>NFT Shards: {(Math.floor(parseFloat(store.wallet[farmId + "-rewards"]))).toFixed(6)}</p>
+            <p>NFT Shards: {(Math.floor(parseFloat(store.wallet[farmId + "-rewards"])))}</p>
+            {percTotalSupply}
 
           </Grid.Column>
         </Grid.Row>
@@ -327,6 +339,33 @@ function Farm(props) {
 
     )
   }
+
+  let nftImage = "", linkButtons = "";
+  if (farmId && farmList.hasOwnProperty(farmId)) {
+    nftImage = (
+      <p><img src={farmList[farmId].nftImage} height="256" /></p>
+    );
+    linkButtons = (
+      <>
+        <a href={farmList[farmId].niftex} target="_blank"><Button color="green" inverted icon><Icon color="green" name="chart line" />Niftex</Button></a>
+        <a href={farmList[farmId].opensea} target="_blank"><Button color="green" inverted icon><Icon color="green" name="image outline" />OpenSea</Button></a>
+      </>
+    );
+  }
+
+  const timeConverter = (unixTimestamp) => {
+    let a = new Date(unixTimestamp * 1000);
+    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let year = a.getFullYear();
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    let hour = a.getHours();
+    let min = a.getMinutes();
+    let sec = a.getSeconds();
+    let time = month + ' ' + date + ' at ' + hour + ':' + min + ':' + sec ;
+    return time;
+  }
+
   if (farm === "farm") {
     return (
       <Redirect to="/farm" />
@@ -357,6 +396,10 @@ function Farm(props) {
                   />
                 </h1>
                 <p>{store.wallet && store.wallet.balances[farmId.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farmId.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                <p>{store.wallet && store.wallet.balances[shardToken.toLowerCase()] ? (shardToken + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[shardToken.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                {/* timeConverter(periodFinish) */}
+                {nftImage}
+                {linkButtons}
                 {refresh()}
               </Segment>
             </Tilt>

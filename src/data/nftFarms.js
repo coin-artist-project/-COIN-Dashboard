@@ -13,6 +13,9 @@ export default {
 		"token" : "COIN",
 		"image" : COIN,
 		"nftImage" : COIN1NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "SKULL",
+		"niftex" : "https://www.niftex.com/launches/details/SKULL",
 		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/14914",
 		"farmContract" : {
 			"mainnet" : "",
@@ -31,6 +34,9 @@ export default {
 		"token" : "CRED",
 		"image" : CRED,
 		"nftImage" : CRED1NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "WNDR",
+		"niftex" : "https://www.niftex.com/launches/details/WNDR",
 		"opensea" : "https://opensea.io/assets/0x22adcaf1d6b5213a76bfddab6d4d38c25ce7c029/73",
 		"farmContract" : {
 			"mainnet" : "",
@@ -49,6 +55,9 @@ export default {
 		"token" : "TRSH",
 		"image" : TRSH,
 		"nftImage" : TRSH1NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "FRAME",
+		"niftex" : "https://www.niftex.com/launches/details/FRAME",
 		"opensea" : "https://opensea.io/assets/0x1702bea2755d076adf737b785926b086eff36f75/212",
 		"farmContract" : {
 			"mainnet" : "",
