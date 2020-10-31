@@ -366,6 +366,20 @@ function Farm(props) {
     return time;
   }
 
+  let timeInfo = "";
+  let now = (Date.now()) / 1000;
+  let fishTime = store.wallet &&
+    store.wallet.stats &&
+    store.wallet.stats[farmId + "-fishTime"] &&
+    parseInt(store.wallet.stats[farmId + "-fishTime"], 10);
+  if (fishTime && now < fishTime) {
+    timeInfo = (<p>{"Farm Ends " + timeConverter(fishTime)}</p>);
+  } else if (fishTime && now >= fishTime) {
+    timeInfo = (<p>{"Farm Ended " + timeConverter(fishTime)}</p>);
+  } else if (store.wallet && store.wallet.stats && store.wallet.stats.hasOwnProperty(farmId + "-fishTime")) {
+    timeInfo = (<p>Farm Starting Shortly!</p>);
+  }
+
   if (farm === "farm") {
     return (
       <Redirect to="/farm" />
@@ -397,7 +411,7 @@ function Farm(props) {
                 </h1>
                 <p>{store.wallet && store.wallet.balances[farmId.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farmId.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
                 <p>{store.wallet && store.wallet.balances[(farmId.toLowerCase() + "-SHARD")] ? (shardToken + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[(farmId.toLowerCase() + "-SHARD")]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
-                <p>{ (store.wallet && store.wallet.stats && store.wallet.stats[farmId + "-fishTime"] ? "Expires: " +timeConverter(store.wallet.stats[farmId + "-fishTime"]) : "") }</p>
+                {timeInfo}
                 {nftImage}
                 {linkButtons}
                 {refresh()}
