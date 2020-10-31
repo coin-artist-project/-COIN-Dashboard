@@ -396,8 +396,8 @@ function Farm(props) {
                   />
                 </h1>
                 <p>{store.wallet && store.wallet.balances[farmId.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farmId.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
-                <p>{store.wallet && store.wallet.balances[shardToken.toLowerCase()] ? (shardToken + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[shardToken.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
-                {/* timeConverter(periodFinish) */}
+                <p>{store.wallet && store.wallet.balances[(farmId.toLowerCase() + "-SHARD")] ? (shardToken + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[(farmId.toLowerCase() + "-SHARD")]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                <p>{ (store.wallet && store.wallet.stats && store.wallet.stats[farmId + "-fishTime"] ? "Expires: " +timeConverter(store.wallet.stats[farmId + "-fishTime"]) : "") }</p>
                 {nftImage}
                 {linkButtons}
                 {refresh()}

@@ -66,6 +66,7 @@ class Web3Adapter {
       for (let farmId in farmList) {
         this[farmId] = new this.web3.eth.Contract(this.erc20ABI, farmList[farmId]["tokenContract"][this.mainnet ? "mainnet" : "rinkeby"]);
         this[farmId + "-UNI"] = new this.web3.eth.Contract(this.uniABI, farmList[farmId]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"])
+        this[farmId + "-SHARD"] = new this.web3.eth.Contract(this.erc20ABI, farmList[farmId]["shardContract"][this.mainnet ? "mainnet" : "rinkeby"])
       }
       //BN
       this.BN = this.web3.utils.BN;
@@ -198,6 +199,8 @@ class Web3Adapter {
         this.balances[farmId] = await this.web3.utils.fromWei(String(token), "ether");
         let farmToken = await this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call();
         this.balances[farmId + "-UNI"] = await this.web3.utils.fromWei(String(farmToken), "ether");
+        let shardToken = await this[farmId + "-SHARD"].methods.balanceOf(this.selectedAddress).call();
+        this.balances[farmId + "-SHARD"] = await this.web3.utils.fromWei(String(shardToken), "ether");
         //if (farmToken && farmToken != 0) {
           await this.getEarnedFarm(farmId);
           //console.log(this[farmId + "-rewards"])
@@ -358,6 +361,8 @@ class Web3Adapter {
         this.stats[farmId + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
         let earnRate = userStaked * (10000 / 30) / 100;
         this.stats[farmId + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
+        let periodFinish = await this[farmId + "-UNI"].methods.periodFinish().call()
+        this.stats[farmId + "-fishTime"] = periodFinish;
       }
     }
     catch (ex) {
