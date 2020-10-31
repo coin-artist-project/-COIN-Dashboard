@@ -12,15 +12,21 @@ function Farm(props) {
   const { store, actions } = useContext(StoreContext);
   const [staking, setStaking] = useState(0)
   const [farm, setFarm] = useState("");
+  const [farmId, setFarmId] = useState("");
+  const [updateView, setUpdateView] = useState(false);
 
   useEffect(() => {
     if (props.match && props.match.params && props.match.params.id) {
       if (farmList.hasOwnProperty(props.match.params.id) >= 0) {
         setFarm(farmList[props.match.params.id].token);
+        setFarmId(props.match.params.id)
       }
       else {
         setFarm("farm")
       }
+    }
+    if (updateView) {
+      setUpdateView(false)
     }
   }, [props])
 
@@ -30,9 +36,9 @@ function Farm(props) {
 
   const submitStake = () => {
     if (staking) {
-      store.wallet.stake(staking);
+      store.wallet.stakeFarm(staking, farmId);
     } else {
-      store.wallet.stake(store.wallet.balances["lp"]);
+      store.wallet.stakeFarm(store.wallet.balances[farmId], farmId);
     }
   };
 
@@ -47,7 +53,7 @@ function Farm(props) {
     )
   }
   const exit = () => {
-    if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
+    if (!store.wallet.balances[farmId + "-UNI"] || store.wallet.balances[farmId + "-UNI"] === "0") {
       return (
         <Grid.Column width={4} centered="true">
           <Card textAligned="center" className="outerCard" centered>
@@ -88,7 +94,7 @@ function Farm(props) {
                   <h3>Exit();</h3>
                   <p>----</p>
                   <p>Leave pool with rewards and stake</p>
-                  <Button inverted color="red" onClick={() => store.wallet.exit()}>Exit</Button>
+                  <Button inverted color="red" onClick={() => store.wallet.exitFarm(farmId)}>Exit</Button>
                 </Grid.Column>
               </Grid.Row>
             </Segment.Group>
@@ -100,8 +106,8 @@ function Farm(props) {
 
   const stakingDisp = () => {
     if (
-      (!store.wallet.balances["uni"] && !store.wallet.balances["lp"]) ||
-      (store.wallet.balances["lp"] == "0" && store.wallet.balances["uni"] === "0")
+      (!store.wallet.balances[farmId + "-UNI"] && !store.wallet.balances[farmId]) ||
+      (store.wallet.balances[farmId] == "0" && store.wallet.balances[farmId + "-UNI"] === "0")
     ) {
       return (
         <Segment.Group textAligned="center" className="Term">
@@ -127,7 +133,7 @@ function Farm(props) {
         </Segment.Group>
       )
     }
-    else if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
+    else if (!store.wallet.balances[farmId + "-UNI"] || store.wallet.balances[farmId + "-UNI"] === "0") {
       return (
         <Segment.Group textAligned="center" className="Term">
           <Grid.Row className="pad" centered>
@@ -140,13 +146,13 @@ function Farm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>----</p>
-              <p>Available: {((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>Available: {((Math.floor(parseFloat(store.wallet.balances[farmId]) * 1000000)) / 1000000).toFixed(6)}</p>
               <Form>
                 <Form.Field>
                   <p>Amount to stake</p>
                   <Input fluid>
-                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
-                    <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances[farmId]} />
+                    <Button onClick={() => setStaking(store.wallet.balances[farmId])} inverted color="yellow" >Max</Button>
                   </Input>
                 </Form.Field>
               </Form>
@@ -161,7 +167,7 @@ function Farm(props) {
         </Segment.Group>
       )
     }
-    else if (store.wallet.balances["lp"] == "0") {
+    else if (store.wallet.balances[farmId] == "0") {
       return (
         <Segment.Group textAligned="center" className="Term">
           <Grid.Row className="pad" centered>
@@ -173,8 +179,8 @@ function Farm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>----</p>
-              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
-              <p>{((Math.floor(parseFloat(store.wallet.stats["userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
+              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances[farmId + "-UNI"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>{((Math.floor(parseFloat(store.wallet.stats[farmId + "-userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
             </Grid.Column>
           </Grid.Row>
         </Segment.Group>
@@ -193,16 +199,16 @@ function Farm(props) {
             <Grid.Column textAlign="center">
               <h3>Staking();</h3>
               <p>----</p>
-              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances["uni"]) * 1000000)) / 1000000).toFixed(6)}</p>
-              <p>{((Math.floor(parseFloat(store.wallet.stats["userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
+              <p>Staking: {((Math.floor(parseFloat(store.wallet.balances[farmId + "-UNI"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>{((Math.floor(parseFloat(store.wallet.stats[farmId + "-userStaked"]) * 1000000)) / 1000000).toFixed(2)}% Staked Total</p>
               <p>----</p>
-              <p>Available: {((Math.floor(parseFloat(store.wallet.balances["lp"]) * 1000000)) / 1000000).toFixed(6)}</p>
+              <p>Available: {((Math.floor(parseFloat(store.wallet.balances[farmId]) * 1000000)) / 1000000).toFixed(6)}</p>
               <Form>
                 <Form.Field>
                   <p>Amount to add</p>
                   <Input fluid>
-                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances["lp"]} />
-                    <Button onClick={() => setStaking(store.wallet.balances["lp"])} inverted color="yellow" >Max</Button>
+                    <input value={staking} onChange={(e) => handleStakeChange(e)} placeholder={store.wallet.balances[farmId]} />
+                    <Button onClick={() => setStaking(store.wallet.balances[farmId])} inverted color="yellow" >Max</Button>
                   </Input>
 
                 </Form.Field>
@@ -221,7 +227,7 @@ function Farm(props) {
   }
 
   const rewardDisp = () => {
-    if (!store.wallet.rewards || store.wallet.rewards == 0) {
+    if (!store.wallet[farmId + "-rewards"] || store.wallet[farmId + "-rewards"] == 0 || store.wallet[farmId + "-rewards"] == "0") {
       return (
         <Segment.Group textAligned="center" className="Term">
           <Grid.Row className="pad" centered>
@@ -253,14 +259,14 @@ function Farm(props) {
           <Grid.Column textAlign="center">
             <h3>Rewards();</h3>
             <p>----</p>
-            <p>NFT Shards: {"0"}</p>
+            <p>NFT Shards: {(Math.floor(parseFloat(store.wallet[farmId + "-rewards"]))).toFixed(6)}</p>
 
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row className="pad" centered={true}>
           <Grid.Column textAlign="center">
-            <Button inverted onClick={() => store.wallet.collectReward()} color="blue">{">"}Collect</Button>
+            <Button inverted onClick={() => store.wallet.collectRewardFarm(farmId)} color="blue">{">"}Collect</Button>
           </Grid.Column>
         </Grid.Row>
       </Segment.Group>
@@ -348,7 +354,7 @@ function Farm(props) {
                     ]}
                   />
                 </h1>
-                <p>{store.wallet && store.wallet.balances[farm.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farm.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+                <p>{store.wallet && store.wallet.balances[farmId.toLowerCase()] ? (farm + " Balance: " + ((Math.floor(parseFloat(store.wallet.balances[farmId.toLowerCase()]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
                 {refresh()}
               </Segment>
             </Tilt>

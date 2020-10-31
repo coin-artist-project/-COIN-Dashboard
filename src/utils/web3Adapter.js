@@ -1,6 +1,7 @@
+import farmList from "../data/nftFarms.js";
 const Web3 = require('web3');
 const uniABI = require("./uniABI.js");
-const erc20ABI = require("./erc20ABI.js")
+const erc20ABI = require("./erc20ABI.js");
 
 class Web3Adapter {
   constructor(provider, cb) {
@@ -31,17 +32,18 @@ class Web3Adapter {
 
   setupContractAddresses = () => {
     if (window && window.ethereum && window.ethereum.networkVersion == "1") {
+      this.mainnet = true;
       this.unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
       this.lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
       this.coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
       this.credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
     }
     else {
+      this.mainnet = false;
       this.unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
       this.lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
       this.coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
       this.credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
-      this.trshAddr = ""
     }
   }
   async init() {
@@ -60,8 +62,11 @@ class Web3Adapter {
       this.lp = new this.web3.eth.Contract(this.erc20ABI, this.lpAddr);
       this.coin = new this.web3.eth.Contract(this.erc20ABI, this.coinAddr);
       this.cred = new this.web3.eth.Contract(this.erc20ABI, this.credAddr);
-  //    this.trsh = new this.web3.eth.Contract(this.erc20ABI, this.trshAddr);
 
+      for (let farmId in farmList) {
+        this[farmId] = new this.web3.eth.Contract(this.erc20ABI, farmList[farmId]["tokenContract"][this.mainnet ? "mainnet" : "rinkeby"]);
+        this[farmId + "-UNI"] = new this.web3.eth.Contract(this.uniABI, farmList[farmId]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"])
+      }
       //BN
       this.BN = this.web3.utils.BN;
 
@@ -188,9 +193,17 @@ class Web3Adapter {
       this.balances["uni"] = await this.web3.utils.fromWei(String(uni), "ether")
       let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
-//      let trsh = await this.trsh.methods.balanceOf(this.selectedAddress).call();
-//      this.balances["trsh"] = await this.web3.utils.fromWei(String(trsh), "ether")
+      for (let farmId in farmList) {
+        let token = await this[farmId].methods.balanceOf(this.selectedAddress).call();
+        this.balances[farmId] = await this.web3.utils.fromWei(String(token), "ether");
+        let farmToken = await this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call();
+        this.balances[farmId + "-UNI"] = await this.web3.utils.fromWei(String(farmToken), "ether");
+        if (farmToken && farmToken != 0) {
+          await this.getEarnedFarm(farmId);
+        }
+      }
       await this.getStats()
+      await this.getStatsFarm()
       if (uni && uni != 0) {
         await this.getEarned();
       }
@@ -228,7 +241,128 @@ class Web3Adapter {
     this.cb.call(this, "success")
   }
 
+  /*
+  / WET
+  */
 
+  // withdraw some stake
+  async withdrawFarm(amount, farm) {
+    this.cb.call(this, "wait", "Withdrawing " + amount + " stake")
+    try {
+      await this[farm + "-UNI"].methods.withdraw(amount).call({ from: this.selectedAddress });
+      this.cb.call(this, "success")
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not withdraw stake"))
+    }
+  }
+
+  // withdraw all + rewards
+  async exitFarm(farm) {
+    this.cb.call(this, "wait", "Collecting all stake + rewards")
+    try {
+      await this[farm + "-UNI"].methods.exit().send({ from: this.selectedAddress });
+      await this.update()
+      this.cb.call(this, "wait", "Updating balances")
+      await this.getBalances();
+      this.cb.call(this, "success")
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not exit!"))
+    }
+  }
+
+  async stakeFarm(amount, farm) {
+    this.cb.call(this, "wait", "Staking...")
+    try {
+      // Get allowance to see if approved, convert to ether denomination
+      let allowance = await this[farm].methods.allowance(this.selectedAddress, farmList[farm]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"]).call({ from: this.selectedAddress });
+      allowance = await this.web3.utils.fromWei(String(allowance), "ether");
+      // Convert both to comparable types
+      let amountBn = new this.BN(amount);
+      let allowanceBn = new this.BN(allowance)
+
+      // If allowance is below amount to stake, approve
+      if (allowanceBn.lt(amountBn)) {
+        this.cb.call(this, "wait", "Approving...")
+        await this.approvalFarm(farm);
+        this.cb.call(this, "wait", "Staking...")
+      }
+
+      // If amount to stake is less than LP, warn balance is too low
+      // NOTE - comparing ether denomination in both cases
+      if (amountBn.lt(String(this.balances[farm]))) {
+        this.cb.call(this, "error", String("Your available LP token balance is too low."))
+        return;
+      }
+
+      let weiAmount = await this.web3.utils.toWei(String(amount), "ether");
+      await this[farm + "-UNI"].methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
+
+      await this.getBalances();
+
+      this.cb.call(this, "success")
+    }
+    catch (ex) {
+      console.log(ex)
+      this.cb.call(this, "error", String("Could not stake"))
+    }
+  }
+
+  async approvalFarm(farm) {
+    try {
+      let maxApproval = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+      await this[farm].methods.approve(farmList[farm]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"], maxApproval).send({ from: this.selectedAddress });
+    }
+    catch (ex) {
+      throw String(ex)
+    }
+  }
+
+  // get rewards
+  async collectRewardFarm(farm) {
+    this.cb.call(this, "wait", "Collecting rewards")
+    try {
+      await this[farm + "-UNI"].methods.getReward().send({ from: this.selectedAddress });
+      await this.update()
+      this.cb.call(this, "wait", "Updating balances")
+      await this.getBalances();
+      this.cb.call(this, "success")
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not get reward"))
+    }
+  }
+
+  // view rewards earned
+  async getEarnedFarm(farm) {
+    try {
+      let rewards = await this[farm + "-UNI"].methods.earned(this.selectedAddress).call();
+      this[farm + "-rewards"] = await this.web3.utils.fromWei(rewards, "ether").toString()
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not find reward"))
+    }
+  }
+
+  async getStatsFarm() {
+    try {
+      for (let farmId in farmList) {
+        let supply = await this[farmId].methods.totalSupply().call();
+        let staked = await this[farmId].methods.balanceOf(farmList[farmId]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"]).call();
+        let lpStaked = (staked / supply) * 100
+        this.stats[farmId + "-totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+        let uniSupply = await this[farmId + "-UNI"].methods.totalSupply().call();
+        let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / uniSupply) * 100
+        this.stats[farmId + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+        let earnRate = userStaked * (10000 / 30) / 100;
+        this.stats[farmId + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
+      }
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not get farm stats"));
+    }
+  }
 
 }
 export default Web3Adapter;
