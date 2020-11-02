@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Icon, Segment, Button } from "semantic-ui-react";
 
 import Web3Modal from "web3modal";
+import Portis from "@portis/web3";
 import Web3Adapter from '../utils/web3Adapter.js';
 import { StoreContext } from "../store/store.js";
 
@@ -12,9 +13,17 @@ function Wallet(props) {
         if (!window.ethereum) {
             return;
         }
-        const providerOptions = {};
+        const providerOptions = {
+            portis: {
+                package: Portis,
+                options: {
+                  id: "ebb7bb3b-c188-4bd8-9f67-041459ca0c75"
+                }
+            }
+        };
+
         const web3Modal = new Web3Modal({
-            network: '*',
+            network: (window.location.href.indexOf('localhost') !== -1) ? '*' : 'mainnet',
             cacheProvider: false,
             providerOptions
         });
