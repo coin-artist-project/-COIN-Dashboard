@@ -42,9 +42,18 @@ function Farms(props) {
         return image;
     }
 
+    const getFarmTitle = (farm) => {
+        let title = "???";
+        if (farmList.hasOwnProperty(farm) && farmList[farm].hasOwnProperty('title')) {
+            title = farmList[farm].title;
+        }
+        return title;
+    }
+
     const upcomingFarm = (farm) => {
         let symbol = getFarmCoin(farm);
         let image = getFarmSymbol(farm);
+        let title = getFarmTitle(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -58,7 +67,7 @@ function Farms(props) {
                                 </Grid.Row>
                                 <Grid.Row className="pad" centered>
                                     <Grid.Column textAlign="center">
-                                        <p>{symbol.toUpperCase()}</p>
+                                        <p>{title.toUpperCase()}</p>
                                         <p>Initializing...</p>
                                         <p>Check back soon!</p>
                                         <Progress error percent={67} active></Progress>
@@ -75,6 +84,7 @@ function Farms(props) {
     const prelaunchFarm = (farm) => {
         let symbol = getFarmCoin(farm);
         let image = getFarmSymbol(farm);
+        let title = getFarmTitle(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -88,7 +98,7 @@ function Farms(props) {
                                 </Grid.Row>
                                 <Grid.Row className="pad" centered>
                                     <Grid.Column textAlign="center">
-                                        <p>{symbol.toUpperCase()}</p>
+                                        <p>{title.toUpperCase()}</p>
                                         <p>Starting Soon!</p>
                                         <Button color="blue" onClick={() => setFarmSelect(farm)} inverted icon>{">"}Join & Prepare</Button>
                                     </Grid.Column>
@@ -104,6 +114,7 @@ function Farms(props) {
     const launchedFarm = (farm) => {
         let symbol = getFarmCoin(farm);
         let image = getFarmSymbol(farm);
+        let title = getFarmTitle(farm);
         return (
             <Grid.Column width={4} centered="true">
                 <Container fluid>
@@ -117,9 +128,39 @@ function Farms(props) {
                                 </Grid.Row>
                                 <Grid.Row className="pad" centered>
                                     <Grid.Column textAlign="center">
-                                        <p>{symbol.toUpperCase()}</p>
+                                        <p>{title.toUpperCase()}</p>
                                         <p>Live Now!</p>
                                         <Button color="blue" onClick={() => setFarmSelect(farm)} inverted icon>{">"}View</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Segment.Group>
+                        </Tilt>
+                    </Card>
+                </Container>
+            </Grid.Column>
+        );
+    }
+
+    const completedFarm = (farm) => {
+        let symbol = getFarmCoin(farm);
+        let image = getFarmSymbol(farm);
+        let title = getFarmTitle(farm);
+        return (
+            <Grid.Column width={4} centered="true">
+                <Container fluid>
+                    <Card textAligned="center" className="outerCard" centered={true}>
+                        <Tilt className="Tilt">
+                            <Segment.Group textAligned="center" className="Term">
+                                <Grid.Row className="pad" centered>
+                                    <Grid.Column textAlign="center">
+                                        {image}
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row className="pad" centered>
+                                    <Grid.Column textAlign="center">
+                                        <p>{title.toUpperCase()}</p>
+                                        <p>Farm Complete!</p>
+                                        <Button color="blue" onClick={() => setFarmSelect(farm)} inverted icon>{">"}Review</Button>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Segment.Group>
@@ -158,13 +199,19 @@ function Farms(props) {
                 </Grid.Row>
 
                 {/* Active Farms */}
+                <Grid.Row centered={true} columns={3}>
+                    {prelaunchFarm('coin-2')}
 
+                    {prelaunchFarm('cred-2')}
+
+                    {prelaunchFarm('uni-2')}
+                </Grid.Row>
 
                 {/* Upcoming Farms */}
                 <Grid.Row centered={true} columns={3}>
-                    {launchedFarm('coin-1')}
+                    {completedFarm('coin-1')}
 
-                    {launchedFarm('cred-1')}
+                    {completedFarm('cred-1')}
 
                     {launchedFarm('trsh-1')}
                 </Grid.Row>

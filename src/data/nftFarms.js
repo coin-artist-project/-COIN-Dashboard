@@ -2,14 +2,20 @@
 import COIN from '../images/coins/COIN.png';
 import CRED from '../images/coins/CRED.png';
 import TRSH from '../images/coins/TRSH.png';
+import UNI from '../images/coins/UNI.png';
 
 // NFTs
 import COIN1NFT from '../images/nfts/coin-1.png';
 import CRED1NFT from '../images/nfts/cred-1.gif';
 import TRSH1NFT from '../images/nfts/trsh-1.png';
 
+import COIN2NFT from '../images/nfts/coin-2.gif';
+import CRED2NFT from '../images/nfts/cred-2.gif';
+import UNI2NFT from '../images/nfts/uni-2.gif';
+
 export default {
 	"coin-1" : {
+		"title" : "COIN WEEK 1",
 		"token" : "COIN",
 		"image" : COIN,
 		"nftImage" : COIN1NFT,
@@ -31,6 +37,7 @@ export default {
 		}
 	},
 	"cred-1" : {
+		"title" : "CRED WEEK 1",
 		"token" : "CRED",
 		"image" : CRED,
 		"nftImage" : CRED1NFT,
@@ -52,6 +59,7 @@ export default {
 		}
 	},
 	"trsh-1" : {
+		"title" : "TRSH WEEK 1",
 		"token" : "TRSH",
 		"image" : TRSH,
 		"nftImage" : TRSH1NFT,
@@ -70,6 +78,72 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x0f46eba0bafe2739d9f3c43a48bb84bee1f6644f",
 			"rinkeby" : "0x0a0Cc964f3414672c82a13d726F0228AC4331dBe"
+		}
+	},
+	"coin-2" : {
+		"title" : "COIN WEEK 2",
+		"token" : "COIN",
+		"image" : COIN,
+		"nftImage" : COIN2NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "MWNN2",
+		"niftex" : "https://www.niftex.com/launches/details/MWNN2",
+		"opensea" : "https://opensea.io/assets/0xcbe642d1b28caeff5f8377560db29e43ba7ac200/1",
+		"farmContract" : {
+			"mainnet" : "0xe97A7C6056CB5E1E13D22F332F8d6cA6DB5AE7dC",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0xe85a37e3fbcf9ec782f06477604de8c211b5c218",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
+			"rinkeby" : ""
+		}
+	},
+	"cred-2" : {
+		"title" : "CRED WEEK 2",
+		"token" : "CRED",
+		"image" : CRED,
+		"nftImage" : CRED2NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "WNDR2",
+		"niftex" : "https://www.niftex.com/launches/details/WNDR2",
+		"opensea" : "https://opensea.io/assets/0x22adcaf1d6b5213a76bfddab6d4d38c25ce7c029/74",
+		"farmContract" : {
+			"mainnet" : "0xc44373e6A2D7117115C655528C1406Df48d0cfeC",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x71d0d05c9772803ccfd4f39ae0e61b35f2792c2f",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
+			"rinkeby" : ""
+		}
+	},
+	"uni-2" : {
+		"title" : "UNI WEEK 2",
+		"token" : "UNI",
+		"image" : UNI,
+		"nftImage" : UNI2NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "CBOP",
+		"niftex" : "https://www.niftex.com/launches/details/CBOP",
+		"opensea" : "https://opensea.io/assets/0xa399e2bc8337608602cad9724caf4c136b1b68d8/6",
+		"farmContract" : {
+			"mainnet" : "0x8725Bd6BB6BC5b6b35315922F3E07eF9e00ea100",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0xbbcdee12f16696f887a009b059561561d4479b45",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+			"rinkeby" : ""
 		}
 	}
 };
