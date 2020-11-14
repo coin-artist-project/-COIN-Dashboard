@@ -3,6 +3,8 @@ import COIN from '../images/coins/COIN.png';
 import CRED from '../images/coins/CRED.png';
 import TRSH from '../images/coins/TRSH.png';
 import UNI from '../images/coins/UNI.png';
+import WHALE from '../images/coins/WHALE.png';
+import RNG from '../images/coins/RNG.png';
 
 // NFTs
 import COIN1NFT from '../images/nfts/coin-1.png';
@@ -12,6 +14,14 @@ import TRSH1NFT from '../images/nfts/trsh-1.png';
 import COIN2NFT from '../images/nfts/coin-2.gif';
 import CRED2NFT from '../images/nfts/cred-2.gif';
 import UNI2NFT from '../images/nfts/uni-2.gif';
+
+import COIN3NFT from '../images/nfts/coin-3.gif';
+import CRED3NFT from '../images/nfts/cred-3.gif';
+import WHALE3NFT from '../images/nfts/whale-3.gif';
+
+import COIN4NFT from '../images/nfts/coin-4.jpg';
+import CRED4NFT from '../images/nfts/cred-4.gif';
+import RNG4NFT from '../images/nfts/rng-4.gif';
 
 export default {
 	"coin-1" : {
@@ -139,6 +149,138 @@ export default {
 		},
 		"shardContract" : {
 			"mainnet" : "0xbbcdee12f16696f887a009b059561561d4479b45",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+			"rinkeby" : ""
+		}
+	},
+	"coin-3" : {
+		"title" : "COIN WEEK 3 #1",
+		"token" : "COIN",
+		"image" : COIN,
+		"nftImage" : COIN3NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "NPMIA",
+		"niftex" : "https://www.niftex.com/launches/details/NPMIA",
+		"opensea" : "https://opensea.io/assets/0x22adcaf1d6b5213a76bfddab6d4d38c25ce7c029/75",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x22972f3900d6fd68dc8c35249936b16f21b0b836",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
+			"rinkeby" : ""
+		}
+	},
+	"cred-3" : {
+		"title" : "CRED WEEK 3 #1",
+		"token" : "CRED",
+		"image" : CRED,
+		"nftImage" : CRED3NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "HYPER",
+		"niftex" : "https://www.niftex.com/launches/details/HYPER",
+		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/15600",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x4982e5c944a6aa5a6aa12e48bb5a4c0b70424080",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
+			"rinkeby" : ""
+		}
+	},
+	"whale-3" : {
+		"title" : "WHALE WEEK 3 #1",
+		"token" : "WHALE",
+		"image" : WHALE,
+		"nftImage" : WHALE3NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "IFREQ",
+		"niftex" : "https://www.niftex.com/launches/details/IFREQ",
+		"opensea" : "https://opensea.io/assets/0x09d2a34aa67b407a925b1b67536bfad80b375306/1",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x0b078bac82e277ed7b9cefb91935ef72dca6e0de",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+			"rinkeby" : ""
+		}
+	},
+	"coin-4" : {
+		"title" : "COIN WEEK 3 #2",
+		"token" : "COIN",
+		"image" : COIN,
+		"nftImage" : COIN4NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "MANIA",
+		"niftex" : "https://www.niftex.com/launches/details/MANIA",
+		"opensea" : "https://opensea.io/assets/0xfbeef911dc5821886e1dda71586d90ed28174b7d/226176",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x1aff4291843a69ce54fb25c227641e2f01f43ff3",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
+			"rinkeby" : ""
+		}
+	},
+	"cred-4" : {
+		"title" : "CRED WEEK 3 #2",
+		"token" : "CRED",
+		"image" : CRED,
+		"nftImage" : CRED4NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "WAKE",
+		"niftex" : "https://www.niftex.com/launches/details/WAKE",
+		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/16009",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x33b07738f34d7b46e4d4e74442a70020762cf8ae",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
+			"rinkeby" : ""
+		}
+	},
+	"rng-4" : {
+		"title" : "RNG WEEK 3 #2",
+		"token" : "RNG",
+		"image" : RNG,
+		"nftImage" : RNG4NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "SKLSP",
+		"niftex" : "https://www.niftex.com/launches/details/SKLSP",
+		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/13969",
+		"farmContract" : {
+			"mainnet" : "",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0xe018ce12dfcec3a8dcc94f4c1946e1dd7c6fe310",
 			"rinkeby" : ""
 		},
 		"tokenContract" : {
