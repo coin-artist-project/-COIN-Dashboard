@@ -4,7 +4,7 @@ import CRED from '../images/coins/CRED.png';
 import TRSH from '../images/coins/TRSH.png';
 import UNI from '../images/coins/UNI.png';
 import WHALE from '../images/coins/WHALE.png';
-import RNG from '../images/coins/RNG.png';
+import LINK from '../images/coins/LINK.png';
 
 // NFTs
 import COIN1NFT from '../images/nfts/coin-1.png';
@@ -21,7 +21,7 @@ import WHALE3NFT from '../images/nfts/whale-3.gif';
 
 import COIN4NFT from '../images/nfts/coin-4.jpg';
 import CRED4NFT from '../images/nfts/cred-4.gif';
-import RNG4NFT from '../images/nfts/rng-4.gif';
+import LINK4NFT from '../images/nfts/link-4.gif';
 
 export default {
 	"coin-1" : {
@@ -44,7 +44,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
 			"rinkeby" : "0x34bFe1342768D6553C970c826392B20EbC0411E2"
-		}
+		},
+		"shardGovernor" : "0xf0e17fd396f4653490db5fc702560cf44fe972f6"
 	},
 	"cred-1" : {
 		"title" : "CRED WEEK 1",
@@ -66,7 +67,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
 			"rinkeby" : "0x3c8fbce8ed206e80aa5dfc45c8a2bcfc54235e9f"
-		}
+		},
+		"shardGovernor" : "0x2f7627dfc5b473b9003e2dd69a0855a9dffc8b86"
 	},
 	"trsh-1" : {
 		"title" : "TRSH WEEK 1",
@@ -88,7 +90,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x0f46eba0bafe2739d9f3c43a48bb84bee1f6644f",
 			"rinkeby" : "0x0a0Cc964f3414672c82a13d726F0228AC4331dBe"
-		}
+		},
+		"shardGovernor" : "0x0357C4c31dD2eF87fbFb7599C8403D30313C587c"
 	},
 	"coin-2" : {
 		"title" : "COIN WEEK 2",
@@ -110,7 +113,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x889efb44b6793abf8fb0036863bdb829dab6d416"
 	},
 	"cred-2" : {
 		"title" : "CRED WEEK 2",
@@ -132,7 +136,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0xb261fb8a2b6e4bc5f9b630a138000856a3e66e71"
 	},
 	"uni-2" : {
 		"title" : "UNI WEEK 2",
@@ -154,7 +159,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x82fb19012fe38296f5c9da70164ed27ffd231a06"
 	},
 	"coin-3" : {
 		"title" : "COIN WEEK 3 #1",
@@ -166,7 +172,7 @@ export default {
 		"niftex" : "https://www.niftex.com/launches/details/NPMIA",
 		"opensea" : "https://opensea.io/assets/0x22adcaf1d6b5213a76bfddab6d4d38c25ce7c029/75",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0x88b8929061f480c9b9ad0a9697e43e307c097b49",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -176,7 +182,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x784b4ff99dc92b2527aa14da496d013199b7d78e"
 	},
 	"cred-3" : {
 		"title" : "CRED WEEK 3 #1",
@@ -188,7 +195,7 @@ export default {
 		"niftex" : "https://www.niftex.com/launches/details/HYPER",
 		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/15600",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0xa6012ab844ceb8caddd38e8761e71a05b2bcda30",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -198,7 +205,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x1c8393d35e8ea4228df398d3667cf914b60ee5c7"
 	},
 	"whale-3" : {
 		"title" : "WHALE WEEK 3 #1",
@@ -210,7 +218,7 @@ export default {
 		"niftex" : "https://www.niftex.com/launches/details/IFREQ",
 		"opensea" : "https://opensea.io/assets/0x09d2a34aa67b407a925b1b67536bfad80b375306/1",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0xf4eb45ce4ead9af5fdc1ac3492711d344a479130",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -220,7 +228,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x3649de7d1085bc99c163d40f03d3ce7ae8b8dfcf"
 	},
 	"coin-4" : {
 		"title" : "COIN WEEK 3 #2",
@@ -232,7 +241,7 @@ export default {
 		"niftex" : "https://www.niftex.com/launches/details/MANIA",
 		"opensea" : "https://opensea.io/assets/0xfbeef911dc5821886e1dda71586d90ed28174b7d/226176",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0x96137fb519be84cd874b9742fbcca3c59dd38e3c",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -242,7 +251,8 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x12bce3c3cf61f83f4b8a9d13551f002b08e47459"
 	},
 	"cred-4" : {
 		"title" : "CRED WEEK 3 #2",
@@ -254,7 +264,7 @@ export default {
 		"niftex" : "https://www.niftex.com/launches/details/WAKE",
 		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/16009",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0x817a258bf950c3cde78ce27d98d7f77362bfa96a",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -264,19 +274,20 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0xeb6269a6298502cb10400e77a53c16c212354896"
 	},
-	"rng-4" : {
-		"title" : "RNG WEEK 3 #2",
-		"token" : "RNG",
-		"image" : RNG,
-		"nftImage" : RNG4NFT,
+	"link-4" : {
+		"title" : "LINK WEEK 3 #2",
+		"token" : "LINK",
+		"image" : LINK,
+		"nftImage" : LINK4NFT,
 		"totalSupply" : 1000000,
 		"shardToken" : "SKLSP",
 		"niftex" : "https://www.niftex.com/launches/details/SKLSP",
 		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/13969",
 		"farmContract" : {
-			"mainnet" : "",
+			"mainnet" : "0x1618342de55cfdec04a0a55ba2fa649b513846b0",
 			"rinkeby" : ""
 		},
 		"shardContract" : {
@@ -286,6 +297,7 @@ export default {
 		"tokenContract" : {
 			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
 			"rinkeby" : ""
-		}
+		},
+		"shardGovernor" : "0x1aa7873ddf311a7d7929c3554461dd5a8099146a"
 	}
 };

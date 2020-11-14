@@ -146,7 +146,7 @@ function Farms(props) {
         let image = getFarmSymbol(farm);
         let title = getFarmTitle(farm);
         return (
-            <Grid.Column width={4} centered="true">
+            <Grid.Column width={4} centered="true" style={{"opacity" : "65%"}}>
                 <Container fluid>
                     <Card textAligned="center" className="outerCard" centered={true}>
                         <Tilt className="Tilt">
@@ -212,7 +212,7 @@ function Farms(props) {
 
                     {prelaunchFarm('cred-4')}
 
-                    {prelaunchFarm('rng-4')}
+                    {prelaunchFarm('link-4')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>

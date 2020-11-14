@@ -244,3 +244,11 @@ box-shadow: unset !important;
 .pVote {
   color: #FF00FF !important;
 }
+
+.completedFarm {
+  opacity : 60%;
+}
+
+.completedFarm:hover {
+  opacity : 100%;
+}
