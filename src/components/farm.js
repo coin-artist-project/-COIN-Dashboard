@@ -15,6 +15,7 @@ function Farm(props) {
   const [shardToken, setShardToken] = useState("");
   const [farmId, setFarmId] = useState("");
   const [updateView, setUpdateView] = useState(false);
+  const [buyoutDetails, setBuyoutDetails] = useState(false);
 
   useEffect(() => {
     setFarm("");
@@ -33,6 +34,14 @@ function Farm(props) {
       setUpdateView(false)
     }
   }, [props, updateView])
+
+  const getBuyoutDetails = async (farmId) => {
+    if (store && store.wallet && !buyoutDetails && farmId) {
+      console.log("Retrieving buyout details for farm:", farmId);
+      setBuyoutDetails({"loading":true});
+      setBuyoutDetails(await store.wallet.getBuyoutDetails(farmId));
+    }
+  }
 
   const handleStakeChange = (e) => {
     setStaking(e.target.value)
@@ -106,6 +115,54 @@ function Farm(props) {
         </Card>
       </Grid.Column>
     )
+  }
+
+  const buyoutDisp = () => {
+      let buyoutStatus = "Not Yet Enabled";
+      let buyoutButton = "";
+      if (buyoutDetails && buyoutDetails.hasOwnProperty('enabled') && buyoutDetails.enabled) {
+        buyoutStatus = "Enabled";
+        buyoutButton = (
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <a href={"https://www.niftex.com/nftClaim/initial-claim/" + (farmList && farmList[farmId] && farmList[farmId]["shardToken"])} target="_blank">
+                <Button inverted color="green">{">"}Make Claim</Button>
+              </a>
+            </Grid.Column>
+          </Grid.Row>
+        );
+
+        if (buyoutDetails.active) {
+          buyoutStatus = "In Progress!";
+          buyoutButton = (
+            <Grid.Row className="pad" centered>
+              <Grid.Column textAlign="center">
+                <a href={"https://www.niftex.com/nftClaim/details/" + (farmList && farmList[farmId] && farmList[farmId]["shardToken"])} target="_blank">
+                  <Button inverted color="green">{">"}View Claim / Buyout</Button>
+                </a>
+              </Grid.Column>
+            </Grid.Row>
+          );
+        }
+      }
+
+      return (
+        <Segment.Group textAligned="center" className="Term">
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <Icon size="massive" color="green" name="cart arrow down" />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row className="pad" centered>
+            <Grid.Column textAlign="center">
+              <h3>Buyout();</h3>
+              <p>----</p>
+              <p>{buyoutStatus}</p>
+            </Grid.Column>
+          </Grid.Row>
+          {buyoutButton}
+        </Segment.Group>
+      )
   }
 
   const stakingDisp = () => {
@@ -313,6 +370,20 @@ function Farm(props) {
         </Grid.Row>
       )
     }
+
+    let stakingOrBuyout;
+
+    let now = (Date.now()) / 1000;
+    let fishTime = store.wallet &&
+      store.wallet.stats &&
+      store.wallet.stats[farmId + "-fishTime"] &&
+      parseInt(store.wallet.stats[farmId + "-fishTime"], 10);
+    if (fishTime && now >= fishTime) {
+      stakingOrBuyout = buyoutDisp(farmId);
+    } else {
+      stakingOrBuyout = stakingDisp();
+    }
+
     return (
       <>
         <Grid.Row centered={true} columns={2}>
@@ -329,7 +400,7 @@ function Farm(props) {
           <Grid.Column width={4} centered="true">
             <Card textAligned="center" className="outerCard" centered>
               <Tilt className="Tilt">
-                {stakingDisp()}
+                {stakingOrBuyout}
               </Tilt>
             </Card>
           </Grid.Column>
@@ -376,6 +447,7 @@ function Farm(props) {
     timeInfo = (<p>{"Farm Ends " + timeConverter(fishTime)}</p>);
   } else if (fishTime && now >= fishTime) {
     timeInfo = (<p>{"Farm Ended " + timeConverter(fishTime)}</p>);
+    getBuyoutDetails(farmId);
   } else if (store.wallet && store.wallet.stats && store.wallet.stats.hasOwnProperty(farmId + "-fishTime")) {
     timeInfo = (<p>Farm Starts Nov 15 at 17:00 UTC</p>);
   }

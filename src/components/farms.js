@@ -200,19 +200,19 @@ function Farms(props) {
 
                 {/* Active Farms */}
                 <Grid.Row centered={true} columns={3}>
-                    {prelaunchFarm('coin-3')}
+                    {launchedFarm('coin-3')}
 
-                    {prelaunchFarm('cred-3')}
+                    {launchedFarm('cred-3')}
 
-                    {prelaunchFarm('whale-3')}
+                    {launchedFarm('whale-3')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
-                    {prelaunchFarm('coin-4')}
+                    {launchedFarm('coin-4')}
 
-                    {prelaunchFarm('cred-4')}
+                    {launchedFarm('cred-4')}
 
-                    {prelaunchFarm('link-4')}
+                    {launchedFarm('link-4')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
@@ -220,7 +220,7 @@ function Farms(props) {
 
                     {completedFarm('cred-2')}
 
-                    {launchedFarm('uni-2')}
+                    {completedFarm('uni-2')}
                 </Grid.Row>
 
                 {/* Upcoming Farms */}

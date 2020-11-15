@@ -226,7 +226,7 @@ export default {
 			"rinkeby" : ""
 		},
 		"tokenContract" : {
-			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+			"mainnet" : "0x9355372396e3f6daf13359b7b607a3374cc638e0",
 			"rinkeby" : ""
 		},
 		"shardGovernor" : "0x3649de7d1085bc99c163d40f03d3ce7ae8b8dfcf"
@@ -295,7 +295,7 @@ export default {
 			"rinkeby" : ""
 		},
 		"tokenContract" : {
-			"mainnet" : "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+			"mainnet" : "0x514910771af9ca656af840dff83e8264ecf986ca",
 			"rinkeby" : ""
 		},
 		"shardGovernor" : "0x1aa7873ddf311a7d7929c3554461dd5a8099146a"

@@ -2,6 +2,7 @@ import farmList from "../data/nftFarms.js";
 const Web3 = require('web3');
 const uniABI = require("./uniABI.js");
 const erc20ABI = require("./erc20ABI.js");
+const shardGovernorABI = require('./shardGovernorABI.js');
 
 class Web3Adapter {
   constructor(provider, cb) {
@@ -13,6 +14,7 @@ class Web3Adapter {
     // ABIs
     this.uniABI = uniABI;
     this.erc20ABI = erc20ABI;
+    this.shardGovernorABI = shardGovernorABI;
 
     // contract addresses
     this.unipool = false
@@ -67,6 +69,7 @@ class Web3Adapter {
         this[farmId] = new this.web3.eth.Contract(this.erc20ABI, farmList[farmId]["tokenContract"][this.mainnet ? "mainnet" : "rinkeby"]);
         this[farmId + "-UNI"] = new this.web3.eth.Contract(this.uniABI, farmList[farmId]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"])
         this[farmId + "-SHARD"] = new this.web3.eth.Contract(this.erc20ABI, farmList[farmId]["shardContract"][this.mainnet ? "mainnet" : "rinkeby"])
+        this[farmId + "-SHARD-GOV"] = new this.web3.eth.Contract(this.shardGovernorABI, farmList[farmId]["shardGovernor"]);
       }
       //BN
       this.BN = this.web3.utils.BN;
@@ -196,9 +199,9 @@ class Web3Adapter {
       this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
       for (let farmId in farmList) {
         let token = await this[farmId].methods.balanceOf(this.selectedAddress).call();
-        this.balances[farmId] = await this.web3.utils.fromWei(String(token), "ether");
+        this.balances[farmId] = (this[farmId]._address.toLowerCase() == '0x9355372396e3f6daf13359b7b607a3374cc638e0') ? token / 10000 : await this.web3.utils.fromWei(String(token), "ether");
         let farmToken = await this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call();
-        this.balances[farmId + "-UNI"] = await this.web3.utils.fromWei(String(farmToken), "ether");
+        this.balances[farmId + "-UNI"] = (this[farmId]._address.toLowerCase() == '0x9355372396e3f6daf13359b7b607a3374cc638e0') ? farmToken / 10000 : (await this.web3.utils.fromWei(String(farmToken), "ether"));
         let shardToken = await this[farmId + "-SHARD"].methods.balanceOf(this.selectedAddress).call();
         this.balances[farmId + "-SHARD"] = await this.web3.utils.fromWei(String(shardToken), "ether");
         //if (farmToken && farmToken != 0) {
@@ -300,7 +303,7 @@ class Web3Adapter {
         return;
       }
 
-      let weiAmount = await this.web3.utils.toWei(String(amount), "ether");
+      let weiAmount = (this[farm]._address.toLowerCase() == '0x9355372396e3f6daf13359b7b607a3374cc638e0') ? amount * 10000 : await this.web3.utils.toWei(String(amount), "ether");
       await this[farm + "-UNI"].methods.stake(String(weiAmount)).send({ from: this.selectedAddress });
 
       await this.getBalances();
@@ -357,7 +360,7 @@ class Web3Adapter {
         let lpStaked = (staked / supply) * 100
         this.stats[farmId + "-totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
         let uniSupply = await this[farmId + "-UNI"].methods.totalSupply().call();
-        let userStaked = (await this.web3.utils.toWei(this.balances[farmId + "-UNI"]) / uniSupply) * 100
+        let userStaked = ( ((this[farmId]._address.toLowerCase() == '0x9355372396e3f6daf13359b7b607a3374cc638e0') ? this.balances[farmId + "-UNI"] * 10000 : await this.web3.utils.toWei(this.balances[farmId + "-UNI"])) / uniSupply) * 100
         this.stats[farmId + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
         let earnRate = userStaked * (10000 / 30) / 100;
         this.stats[farmId + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
@@ -368,6 +371,20 @@ class Web3Adapter {
     catch (ex) {
       this.cb.call(this, "error", String("Could not get farm stats"));
     }
+  }
+
+  async getBuyoutDetails(farmId) {
+    if (this[farmId + "-SHARD"] && this[farmId + "-SHARD-GOV"] && this[farmId + "-SHARD"].methods && this[farmId + "-SHARD-GOV"].methods) {
+      let disabled = await this[farmId + "-SHARD"].methods.shotgunDisabled().call();
+      let available = await this[farmId + "-SHARD-GOV"].methods.checkShotgunState().call();
+
+      return {
+        enabled : !disabled,
+        active : !available
+      };
+    }
+
+    return false;
   }
 
 }
