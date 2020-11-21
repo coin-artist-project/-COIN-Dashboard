@@ -198,7 +198,14 @@ function Farms(props) {
                     </Tilt>
                 </Grid.Row>
 
-                {/* Active Farms */}
+                <Grid.Row centered={true} columns={3}>
+                    {prelaunchFarm('coin-5')}
+
+                    {prelaunchFarm('cred-5')}
+
+                    {prelaunchFarm('rng-5')}
+                </Grid.Row>
+
                 <Grid.Row centered={true} columns={3}>
                     {launchedFarm('coin-3')}
 
@@ -223,7 +230,6 @@ function Farms(props) {
                     {completedFarm('uni-2')}
                 </Grid.Row>
 
-                {/* Upcoming Farms */}
                 <Grid.Row centered={true} columns={3}>
                     {completedFarm('coin-1')}
 
