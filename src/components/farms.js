@@ -199,27 +199,35 @@ function Farms(props) {
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
-                    {prelaunchFarm('coin-5')}
+                    {launchedFarm('coin-6')}
 
-                    {prelaunchFarm('cred-5')}
+                    {launchedFarm('cred-6')}
 
-                    {prelaunchFarm('rng-5')}
+                    {launchedFarm('rng-6')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
-                    {launchedFarm('coin-3')}
+                    {completedFarm('coin-5')}
 
-                    {launchedFarm('cred-3')}
+                    {completedFarm('cred-5')}
 
-                    {launchedFarm('whale-3')}
+                    {completedFarm('rng-5')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
-                    {launchedFarm('coin-4')}
+                    {completedFarm('coin-3')}
 
-                    {launchedFarm('cred-4')}
+                    {completedFarm('cred-3')}
 
-                    {launchedFarm('link-4')}
+                    {completedFarm('whale-3')}
+                </Grid.Row>
+
+                <Grid.Row centered={true} columns={3}>
+                    {completedFarm('coin-4')}
+
+                    {completedFarm('cred-4')}
+
+                    {completedFarm('link-4')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>

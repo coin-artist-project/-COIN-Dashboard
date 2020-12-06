@@ -28,6 +28,10 @@ import COIN5NFT from '../images/nfts/coin-5.gif';
 import CRED5NFT from '../images/nfts/cred-5.gif';
 import RNG5NFT from '../images/nfts/rng-5.gif';
 
+import COIN6NFT from '../images/nfts/coin-6.png';
+import CRED6NFT from '../images/nfts/cred-6.gif';
+import RNG6NFT from '../images/nfts/rng-6.gif';
+
 export default {
 	"coin-1" : {
 		"title" : "COIN WEEK 1",
@@ -388,5 +392,77 @@ export default {
 			"rinkeby" : ""
 		},
 		"shardGovernor" : "0xBDA6dc78fA8bc2786Bc8bff66bE56b934206ee8D"
+	},
+	"coin-6" : {
+		"title" : "COIN WEEK 6",
+		"token" : "COIN",
+		"isRoll" : false,
+		"image" : COIN,
+		"nftImage" : COIN6NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "CRCIA",
+		"niftex" : "https://www.niftex.com/launches/details/CRCIA",
+		"opensea" : "https://opensea.io/assets/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/13074",
+		"farmContract" : {
+			"mainnet" : "0x684D1b10265e0F0ff71fE15640ff1c11d326AEd3",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x51720681A0CBCdE8Ab602F0Eb9643986EB2B70ff",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0x45ddC6f59b2FbFCacB5B13E504de22FC7B4eC1C9"
+	},
+	"cred-6" : {
+		"title" : "CRED WEEK 6",
+		"token" : "CRED",
+		"isRoll" : false,
+		"image" : CRED,
+		"nftImage" : CRED6NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "TRIPW",
+		"niftex" : "https://www.niftex.com/launches/details/TRIPW",
+		"opensea" : "https://opensea.io/assets/0x42ea135d8e9e90657d6d5f715f59794c68be7f17/154",
+		"farmContract" : {
+			"mainnet" : "0xd07164bFC525c17D90B99a71779B58B21C7503de",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x971e22a354FE026fAF437Dd283a21fD5bf57B4FA",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0x6641fB7a2CB90888c3f7f586ea300D41Ac6aBDAC"
+	},
+	"rng-6" : {
+		"title" : "RNG WEEK 6",
+		"token" : "RNG",
+		"isRoll" : true,
+		"image" : RNG,
+		"nftImage" : RNG6NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "THINK",
+		"niftex" : "https://www.niftex.com/launches/details/THINK",
+		"opensea" : "https://opensea.io/assets/0x09d2a34aa67b407a925b1b67536bfad80b375306/2",
+		"farmContract" : {
+			"mainnet" : "0xA3e882776947Aaa7a53d716c2Cfe79aEC5bb5Dc0",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0xBbB60Df786dE6f9f5A79F1fEc7d371045d7DEc0c",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xa2f96EF6ed3d67A0352e659B1E980f13e098619F",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0x25dec0e786e9d295eedfa26f9fe6a0ef86148ead"
 	}
 };
