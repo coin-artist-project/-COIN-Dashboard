@@ -25,13 +25,13 @@ function MarketInfo() {
     return (
         <>
         <Menu.Item color="green">
-            $COIN: {data["ethCoin"] ? data["ethCoin"] : "!"} / ETH
+            COIN: {data["ethCoin"] ? data["ethCoin"] : "!"} / ETH
         </Menu.Item>
         <Menu.Item color="teal">
-                ETH: {data["coinEth"] ? data["coinEth"] : "!"} / $COIN
+                ETH: {data["coinEth"] ? data["coinEth"] : "!"} / COIN
         </Menu.Item>
         <Menu.Item color="purple">
-                USD: {data["coinUSD"] ? data["coinUSD"] : "!"} / $COIN
+                USD: {data["coinUSD"] ? data["coinUSD"] : "!"} / COIN
         </Menu.Item>
         <Menu.Item color="red">
                 USD: {data["ethUSD"] ? data["ethUSD"] : "!"} / ETH

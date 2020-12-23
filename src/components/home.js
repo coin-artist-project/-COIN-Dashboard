@@ -15,7 +15,7 @@ function Home() {
                             <h1>
                                 <Scramble
                                     autoStart
-                                    text="$COIN OS"
+                                    text="COIN'S EDEN OS"
                                     steps={[
                                         {
                                             roll: 10,
@@ -37,13 +37,21 @@ function Home() {
                             <Grid>
                                 <Grid.Row centered={true} columns={4}>
                                     <Grid.Column>
-                                        <Icon name="twitter" size="huge" color="blue" />
+                                        <a href="https://twitter.com/coin_artist" target="_blank">
+                                            <Icon name="twitter" size="huge" color="blue" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="discord" size="huge" color="purple" />
+                                        <a href="https://discord.com/invite/3AbutcS" target="_blank">
+                                            <Icon name="discord" size="huge" color="purple" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="telegram" size="huge" color="teal" />
+                                        <a href="https://t.me/coincred" target="_blank">
+                                            <Icon name="telegram" size="huge" color="teal" />
+                                        </a>
                                     </Grid.Column><Grid.Column>
-                                        <Icon name="medium" size="huge" color="white" />
+                                        <a href="https://coin-artist.medium.com/" target="_blank">
+                                            <Icon name="medium" size="huge" color="white" />
+                                        </a>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

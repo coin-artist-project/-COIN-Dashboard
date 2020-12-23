@@ -28,7 +28,7 @@ function Charter(props) {
                         </h1>
                         <Container fluid={true} text textAlign="left">
                             <p>
-                                Coin’s E-Den is a social experiment in tokenizing the personal brand of Marguerite deCourcelle (aka coin_artist). Holders of the $COIN token form a unique Syndicate of cyberpunk enthusiasts within the fictional universe of Neon District. This Syndicate is a closed social network of individuals who collectively share the coin_artist brand identity. Syndicate members, therefore, represent the interests of coin_artist’s projects and influence the direction of these projects via shared governance and strategic planning.
+                                Coin’s E-Den is a social experiment in tokenizing the personal brand of Marguerite deCourcelle (aka coin_artist). Holders of the COIN token form a unique Syndicate of cyberpunk enthusiasts within the fictional universe of Neon District. This Syndicate is a closed social network of individuals who collectively share the coin_artist brand identity. Syndicate members, therefore, represent the interests of coin_artist’s projects and influence the direction of these projects via shared governance and strategic planning.
                             </p>
                             <p>
                                 The Syndicate, as a community, values social inclusion and experimentation within the scope of co-operative gaming, decentralized finance, token gamification, and NFT reward distribution mechanisms. The Syndicate’s primary goal is to establish a community where creativity is encouraged to produce a rich and vibrant atmosphere within a gamified social network.

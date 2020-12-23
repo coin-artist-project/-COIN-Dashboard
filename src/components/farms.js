@@ -199,11 +199,19 @@ function Farms(props) {
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>
-                    {launchedFarm('coin-6')}
+                    {launchedFarm('coin-7')}
 
-                    {launchedFarm('cred-6')}
+                    {launchedFarm('cred-7')}
 
-                    {launchedFarm('rng-6')}
+                    {launchedFarm('rng-7')}
+                </Grid.Row>
+
+                <Grid.Row centered={true} columns={3}>
+                    {completedFarm('coin-6')}
+
+                    {completedFarm('cred-6')}
+
+                    {completedFarm('rng-6')}
                 </Grid.Row>
 
                 <Grid.Row centered={true} columns={3}>

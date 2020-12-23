@@ -249,10 +249,10 @@ function Calm(props) {
           <Grid.Column textAlign="center">
             <h3>Rewards();</h3>
             <p>----</p>
-            <p>$COIN Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"]) * 1000000)) / 1000000).toFixed(6)} / Day</p>
+            <p>COIN Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"]) * 1000000)) / 1000000).toFixed(6)} / Day</p>
             <p>$CRED Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"] * 100) * 1000000)) / 1000000).toFixed(6)} / Day</p>
             <p>----</p>
-            <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} $COIN</p>
+            <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} COIN</p>
             <p>{((Math.floor(parseFloat(store.wallet.rewards * 100) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
             <p></p>
           </Grid.Column>
@@ -344,7 +344,7 @@ function Calm(props) {
               </h1>
               <h4>Coin Artist Liquidity Mining</h4>
               <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Total Liquidity Staked: " + ((Math.floor(parseFloat(store.wallet.stats["totalStaked"]) * 1000000)) / 1000000).toFixed(2) + "%") : ""}</p>
-              <p>{store.wallet && store.wallet.balances["coin"] ? ("$COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
+              <p>{store.wallet && store.wallet.balances["coin"] ? ("COIN Balance: " + ((Math.floor(parseFloat(store.wallet.balances["coin"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
               <p>{store.wallet && store.wallet.balances["cred"] ? ("$CRED Balance: " + ((Math.floor(parseFloat(store.wallet.balances["cred"]) * 1000000)) / 1000000).toFixed(6)) : ""}</p>
               {refresh()}
             </Segment>

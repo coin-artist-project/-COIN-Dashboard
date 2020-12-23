@@ -32,6 +32,10 @@ import COIN6NFT from '../images/nfts/coin-6.png';
 import CRED6NFT from '../images/nfts/cred-6.gif';
 import RNG6NFT from '../images/nfts/rng-6.gif';
 
+import COIN7NFT from '../images/nfts/coin-7.gif';
+import CRED7NFT from '../images/nfts/cred-7.jpg';
+import RNG7NFT from '../images/nfts/rng-7.gif';
+
 export default {
 	"coin-1" : {
 		"title" : "COIN WEEK 1",
@@ -464,5 +468,77 @@ export default {
 			"rinkeby" : ""
 		},
 		"shardGovernor" : "0x25dec0e786e9d295eedfa26f9fe6a0ef86148ead"
+	},
+	"coin-7" : {
+		"title" : "COIN WEEK 7",
+		"token" : "COIN",
+		"isRoll" : false,
+		"image" : COIN,
+		"nftImage" : COIN7NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "CYBVB",
+		"niftex" : "https://www.niftex.com/launches/details/CYBVB",
+		"opensea" : "https://opensea.io/assets/0xcbe642d1b28caeff5f8377560db29e43ba7ac200/6",
+		"farmContract" : {
+			"mainnet" : "0x86583c9f2c4e2998e4c1c51c97186ad5187aedc0",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0xb8588f8fe1c2a8656bee8ffdee1c1469a0556be6",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0x87b008E57F640D94Ee44Fd893F0323AF933F9195",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0x0C230A2648645Cc2620Db093C160b862e296885F"
+	},
+	"cred-7" : {
+		"title" : "CRED WEEK 7",
+		"token" : "CRED",
+		"isRoll" : false,
+		"image" : CRED,
+		"nftImage" : CRED7NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "NOONE",
+		"niftex" : "https://www.niftex.com/launches/details/NOONE",
+		"opensea" : "https://opensea.io/assets/0x60f80121c31a0d46b5279700f9df786054aa5ee5/59521",
+		"farmContract" : {
+			"mainnet" : "0xf873D055414327c6506eF9199402b538D277121f",
+			"rinkeby" : ""
+		},
+		"shardContract" : {
+			"mainnet" : "0x0a7ef13bf9ebaabbb7912b7f859b164a725e8de7",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xED7Fa212E100DFb3b13B834233E4B680332a3420",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0x3db3a73dd44f150981825f07b46ff345c1e096aa"
+	},
+	"rng-7" : {
+		"title" : "RNG WEEK 7",
+		"token" : "RNG",
+		"isRoll" : true,
+		"image" : RNG,
+		"nftImage" : RNG7NFT,
+		"totalSupply" : 1000000,
+		"shardToken" : "CONST",
+		"niftex" : "https://www.niftex.com/launches/details/CONST",
+		"opensea" : "https://opensea.io/assets/0xb89bd7ed0551746a8e49c760f9ba92a052d25e2d/5",
+		"farmContract" : {
+			"mainnet" : "0x9e38c95DC661534f3fF2C372Ba3620F6dF5EdBB5",
+			"rinkeby" : ""
+		},
+		"shardContract" : {	
+			"mainnet" : "0x3bbffaa97cae3514eceebbcd9b5d3840ecf71301",
+			"rinkeby" : ""
+		},
+		"tokenContract" : {
+			"mainnet" : "0xa2f96EF6ed3d67A0352e659B1E980f13e098619F",
+			"rinkeby" : ""
+		},
+		"shardGovernor" : "0xb07f7a3216f8d7a986b5491723e45c4db6d267f0"
 	}
 };
