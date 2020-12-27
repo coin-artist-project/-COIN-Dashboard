@@ -1,5 +1,6 @@
 import farmList from "../data/nftFarms.js";
 const Web3 = require('web3');
+const oldUniABI = require("./oldUniABI.js");
 const uniABI = require("./uniABI.js");
 const erc20ABI = require("./erc20ABI.js");
 const shardGovernorABI = require('./shardGovernorABI.js');
@@ -12,6 +13,7 @@ class Web3Adapter {
     this.BN = false;
 
     // ABIs
+    this.oldUniABI = oldUniABI;
     this.uniABI = uniABI;
     this.erc20ABI = erc20ABI;
     this.shardGovernorABI = shardGovernorABI;
@@ -35,6 +37,7 @@ class Web3Adapter {
   setupContractAddresses = () => {
     if (window && window.ethereum && window.ethereum.networkVersion == "1") {
       this.mainnet = true;
+      this.oldUnipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
       this.unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
       this.lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
       this.coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
@@ -42,6 +45,7 @@ class Web3Adapter {
     }
     else {
       this.mainnet = false;
+      this.oldUnipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
       this.unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
       this.lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
       this.coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
@@ -60,6 +64,7 @@ class Web3Adapter {
       this.setupContractAddresses();
 
       // Init all contracts
+      this.oldUnipool = new this.web3.eth.Contract(this.oldUniABI, this.oldUnipoolAddr);
       this.unipool = new this.web3.eth.Contract(this.uniABI, this.unipoolAddr);
       this.lp = new this.web3.eth.Contract(this.erc20ABI, this.lpAddr);
       this.coin = new this.web3.eth.Contract(this.erc20ABI, this.coinAddr);
@@ -161,6 +166,19 @@ class Web3Adapter {
     }
   }
 
+  // withdraw all + rewards
+  async exitOld() {
+    this.cb.call(this, "wait", "Collecting all stake + rewards")
+    try {
+      await this.unipool.methods.exit().send({ from: this.selectedAddress });
+      await this.getBalances();
+      this.cb.call(this, "success")
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not exit!"))
+    }
+  }
+
   // get rewards
   async collectReward(amount) {
     this.cb.call(this, "wait", "Collecting rewards")
@@ -187,32 +205,82 @@ class Web3Adapter {
     }
   }
 
+  promisifyWeb3Call(callObj) {
+    return new Promise(resolve => {
+      callObj.call().then(res => {
+        resolve({res, status: 'ok', farm: callObj.farm, index: callObj.index});
+      }).catch(err => {
+        resolve({status: 'error', farm: callObj.farm, index: callObj.index});
+      });
+    });
+  }
+
+  promisifyMultipleWeb3Calls(calls) {
+    return Promise.all(calls.map(this.promisifyWeb3Call.bind(this)));
+  }
+
   // view staked
   async getBalances() {
     try {
-      let lp = await this.lp.methods.balanceOf(this.selectedAddress).call();
-      this.balances["lp"] = await this.web3.utils.fromWei(String(lp), "ether")
-      let coin = await this.coin.methods.balanceOf(this.selectedAddress).call();
-      this.balances["coin"] = await this.web3.utils.fromWei(String(coin), "ether")
-      let uni = await this.unipool.methods.balanceOf(this.selectedAddress).call();
-      this.balances["uni"] = await this.web3.utils.fromWei(String(uni), "ether")
-      let cred = await this.cred.methods.balanceOf(this.selectedAddress).call();
-      this.balances["cred"] = await this.web3.utils.fromWei(String(cred), "ether")
+      let calls = [
+        {call: this.lp.methods.balanceOf(this.selectedAddress).call.bind(this),         index: 'lp'},
+        {call: this.coin.methods.balanceOf(this.selectedAddress).call.bind(this),       index: 'coin'},
+        {call: this.unipool.methods.balanceOf(this.selectedAddress).call.bind(this),    index: 'uni'},
+        {call: this.oldUnipool.methods.balanceOf(this.selectedAddress).call.bind(this), index: 'old-uni'},
+        {call: this.cred.methods.balanceOf(this.selectedAddress).call.bind(this),       index: 'cred'}
+      ];
+
       for (let farmId in farmList) {
-        let token = await this[farmId].methods.balanceOf(this.selectedAddress).call();
-        this.balances[farmId] = (this[farmId + "-ISROLL"]) ? token / 10000 : await this.web3.utils.fromWei(String(token), "ether");
-        let farmToken = await this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call();
-        this.balances[farmId + "-UNI"] = (this[farmId + "-ISROLL"]) ? farmToken / 10000 : (await this.web3.utils.fromWei(String(farmToken), "ether"));
-        let shardToken = await this[farmId + "-SHARD"].methods.balanceOf(this.selectedAddress).call();
-        this.balances[farmId + "-SHARD"] = await this.web3.utils.fromWei(String(shardToken), "ether");
-        //if (farmToken && farmToken != 0) {
-          await this.getEarnedFarm(farmId);
-          //console.log(this[farmId + "-rewards"])
-        //}
+        if (farmId.indexOf('coin-') === -1 && farmId.indexOf('cred-') === -1) {
+          calls.push(
+            {call: this[farmId].methods.balanceOf(this.selectedAddress).call.bind(this), farm: farmId, index: farmId}
+          );
+        }
+
+        calls.push(
+          {call: this[farmId + "-UNI"].methods.balanceOf(this.selectedAddress).call.bind(this),   farm: farmId, index: farmId + "-UNI"},
+          {call: this[farmId + "-SHARD"].methods.balanceOf(this.selectedAddress).call.bind(this), farm: farmId, index: farmId + "-SHARD"}
+        );
       }
-      await this.getStats()
-      await this.getStatsFarm()
-      if (uni && uni != 0) {
+
+      let results = await this.promisifyMultipleWeb3Calls(calls);
+
+      // Pull the coin & cred balances out
+      let coinBal = this.getResultByIndex(results, 'coin');
+      let credBal = this.getResultByIndex(results, 'cred');
+
+      // Set all balances
+      for (let result of results) {
+        let value = 0;
+
+        if (result.status === 'ok') {
+          if (!result.farm) {
+            value = this.web3.utils.fromWei(String(result.res), "ether");
+          } else if (result.farm) {
+            // Append the coin / cred balances
+            if (result.farm.indexOf('coin-') !== -1) {
+              this.balances[result.farm] = this.web3.utils.fromWei(String(coinBal), "ether");
+            } else if (result.farm.indexOf('cred-') !== -1) {
+              this.balances[result.farm] = this.web3.utils.fromWei(String(credBal), "ether");
+            }
+
+            if (result.index.indexOf('-UNI') !== -1 || result.index === result.farm) {
+              value = this[result.farm + "-ISROLL"] ? result.res / 10000 : this.web3.utils.fromWei(String(result.res), "ether");
+            } else {
+              value = this.web3.utils.fromWei(String(result.res), "ether");
+            }
+          }
+        }
+
+        this.balances[result.index] = value;
+      }
+
+      //console.log("balances:", this.balances);
+
+      await this.getEarnedFarms();
+      await this.getStats();
+      await this.getStatsFarm();
+      if (this.balances['uni'] && this.balances['uni'] > 0) {
         await this.getEarned();
       }
     }
@@ -221,13 +289,53 @@ class Web3Adapter {
     }
   }
 
+  // view rewards earned
+  async getEarnedFarms() {
+    try {
+      let calls = [];
+
+      for (let farm in farmList) {
+        calls.push({call : this[farm + "-UNI"].methods.earned(this.selectedAddress).call.bind(this), farm, index: farm + "-rewards"})
+      }
+
+      let results = await this.promisifyMultipleWeb3Calls(calls);
+
+      for (let result of results) {
+        let value = 0;
+
+        if (result.status === 'ok') {
+          if (!result.farm) {
+            value = this.web3.utils.fromWei(String(result.res), "ether").toString();
+          } else if (result.farm) {
+            value = this.web3.utils.fromWei(String(result.res), "ether").toString();
+          }
+        }
+
+        this[result.index] = value;
+        //console.log(`${result.index}: ${value}`);
+      }
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not find reward"))
+    }
+  }
+
   async getStats() {
     try {
-      let supply = await this.lp.methods.totalSupply().call();
-      let staked = await this.lp.methods.balanceOf(this.unipoolAddr).call();
+      let calls = [
+        {call : this.lp.methods.totalSupply().call.bind(this),               index: 'supply'},
+        {call : this.lp.methods.balanceOf(this.unipoolAddr).call.bind(this), index: 'staked'},
+        {call : this.unipool.methods.totalSupply().call.bind(this),          index: 'uniSupply'}
+      ];
+
+      let results = await this.promisifyMultipleWeb3Calls(calls);
+
+      let supply = this.getResultByIndex(results, 'supply');
+      let staked = this.getResultByIndex(results, 'staked');
+      let uniSupply = this.getResultByIndex(results, 'uniSupply');
+
       let lpStaked = (staked / supply) * 100
       this.stats["totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-      let uniSupply = await this.unipool.methods.totalSupply().call();
       let userStaked = (await this.web3.utils.toWei(this.balances["uni"]) / uniSupply) * 100
       this.stats["userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
       let earnRate = userStaked * (10000 / 30) / 100;
@@ -236,6 +344,48 @@ class Web3Adapter {
     catch (ex) {
       this.cb.call(this, "error", String("Could not get stats"));
     }
+  }
+
+  async getStatsFarm() {
+    try {
+      let calls = [];
+
+      for (let farm in farmList) {
+        let farmContractAddr = farmList[farm]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"];
+        calls.push(
+          {call : this[farm].methods.totalSupply().call.bind(this),               farm, index: farm + '-supply'},
+          {call : this[farm].methods.balanceOf(farmContractAddr).call.bind(this), farm, index: farm + '-staked'},
+          {call : this[farm + "-UNI"].methods.totalSupply().call.bind(this),      farm, index: farm + '-uniSupply'},
+          {call : this[farm + "-UNI"].methods.periodFinish().call.bind(this),     farm, index: farm + '-periodFinish'}
+        );
+      }
+
+      let results = await this.promisifyMultipleWeb3Calls(calls);
+
+      for (let farm in farmList) {
+        let supply = this.getResultByIndex(results, farm + '-supply');
+        let staked = this.getResultByIndex(results, farm + '-staked');
+        let uniSupply = this.getResultByIndex(results, farm + '-uniSupply');
+        let periodFinish = this.getResultByIndex(results, farm + '-periodFinish');
+
+        let lpStaked = (staked / supply) * 100;
+        this.stats[farm + "-totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+        let userStaked = ( ((this[farm + "-ISROLL"]) ? this.balances[farm + "-UNI"] * 10000 : await this.web3.utils.toWei(this.balances[farm + "-UNI"])) / uniSupply) * 100
+        this.stats[farm + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
+        let earnRate = userStaked * (10000 / 30) / 100;
+        this.stats[farm + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
+        this.stats[farm + "-fishTime"] = periodFinish;
+
+        //console.log(this.stats[farm + "-totalStaked"], this.stats[farm + "-userStaked"], this.stats[farm + "-earnRate"], this.stats[farm + "-fishTime"]);
+      }
+    }
+    catch (ex) {
+      this.cb.call(this, "error", String("Could not get farm stats"));
+    }
+  }
+
+  getResultByIndex(results, index) {
+    return results.reduce((acc, cur) => { if (cur.index === index) return cur.res; return (typeof acc === 'object' ? acc.res : acc); });
   }
 
   async update() {
@@ -339,38 +489,6 @@ class Web3Adapter {
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not get reward"))
-    }
-  }
-
-  // view rewards earned
-  async getEarnedFarm(farm) {
-    try {
-      let rewards = await this[farm + "-UNI"].methods.earned(this.selectedAddress).call();
-      this[farm + "-rewards"] = await this.web3.utils.fromWei(rewards, "ether").toString()
-    }
-    catch (ex) {
-      this.cb.call(this, "error", String("Could not find reward"))
-    }
-  }
-
-  async getStatsFarm() {
-    try {
-      for (let farmId in farmList) {
-        let supply = await this[farmId].methods.totalSupply().call();
-        let staked = await this[farmId].methods.balanceOf(farmList[farmId]["farmContract"][this.mainnet ? "mainnet" : "rinkeby"]).call();
-        let lpStaked = (staked / supply) * 100
-        this.stats[farmId + "-totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-        let uniSupply = await this[farmId + "-UNI"].methods.totalSupply().call();
-        let userStaked = ( ((this[farmId + "-ISROLL"]) ? this.balances[farmId + "-UNI"] * 10000 : await this.web3.utils.toWei(this.balances[farmId + "-UNI"])) / uniSupply) * 100
-        this.stats[farmId + "-userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
-        let earnRate = userStaked * (10000 / 30) / 100;
-        this.stats[farmId + "-earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
-        let periodFinish = await this[farmId + "-UNI"].methods.periodFinish().call()
-        this.stats[farmId + "-fishTime"] = periodFinish;
-      }
-    }
-    catch (ex) {
-      this.cb.call(this, "error", String("Could not get farm stats"));
     }
   }
 
