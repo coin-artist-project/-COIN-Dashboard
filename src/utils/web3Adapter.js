@@ -27,6 +27,7 @@ class Web3Adapter {
     // token info
     this.balances = {}
     this.rewards = false;
+    this.cred_rewards = false;
     this.stats = {}
 
     // account info
@@ -38,7 +39,7 @@ class Web3Adapter {
     if (window && window.ethereum && window.ethereum.networkVersion == "1") {
       this.mainnet = true;
       this.oldUnipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
-      this.unipoolAddr = "0xBDaAa340C4472aaEACE8032dDB261f1856022DE2"
+      this.unipoolAddr = "0x7b96f4A90A85e95cE1d91B038bB963B80a9140bC"
       this.lpAddr = "0xcce852e473ecfdebfd6d3fd5bae9e964fd2a3fa7"
       this.coinAddr = "0x87b008e57f640d94ee44fd893f0323af933f9195"
       this.credAddr = "0xED7Fa212E100DFb3b13B834233E4B680332a3420"
@@ -46,7 +47,7 @@ class Web3Adapter {
     else {
       this.mainnet = false;
       this.oldUnipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
-      this.unipoolAddr = "0x4A687f5C29A33998815481292Ee40b8d985DdB12"
+      this.unipoolAddr = "0xCA1433b225b4D7c226Dd351e74F23DD53df393CE"
       this.lpAddr = "0xB56A869b307d288c3E40B65e2f77038F3579F868"
       this.coinAddr = "0x81F63d3768A85Be640E1ee902Ffeb1484bC255aD"
       this.credAddr = "0x974C482c2B31e21B9b4A2EE77D51A525485F2dDc"
@@ -199,6 +200,9 @@ class Web3Adapter {
     try {
       let rewards = await this.unipool.methods.earned(this.selectedAddress).call();
       this.rewards = await this.web3.utils.fromWei(rewards, "ether").toString()
+
+      let cred_rewards = await this.unipool.methods.cred_earned(this.selectedAddress).call();
+      this.cred_rewards = await this.web3.utils.fromWei(cred_rewards, "ether").toString()
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not find reward"))

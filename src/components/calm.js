@@ -33,8 +33,6 @@ function Calm(props) {
   };
 
   const exitOldFarm = () => {
-    return "";
-
     if (!store.wallet || store.wallet.balances["old-uni"] <= 0) {
       return "";
     }
@@ -62,10 +60,13 @@ function Calm(props) {
                 />
               </h1>
               <p>
-                On December 29th at 17:00 UTC, we are upgrading the Liquidity Mining contract to allow for variable CRED emission.
+                In the next few days, we are upgrading the Liquidity Mining contract to allow for variable CRED emission. The exact date and time will be announced when gas prices are cheaper.
               </p>
               <p>
-                You will need to exit this current farm before you can stake your LP tokens in the new C.A.L.M. Farm.
+                You will need to exit this current farm before you can stake your LP tokens in the new C.A.L.M. Farm. The new farm is live, you can exit the old farm and join the new farm at any time.
+              </p>
+              <p>
+                By exiting the old farm, you will also collect all of your COIN and CRED rewards.
               </p>
               <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Liquidity Provider Tokens Staked: " + store.wallet.balances["old-uni"]) : ""}</p>
               {exitOldFarmButton()}
@@ -304,7 +305,7 @@ function Calm(props) {
             <p>$CRED Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"] * 100) * 1000000)) / 1000000).toFixed(6)} / Day</p>
             <p>----</p>
             <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} COIN</p>
-            <p>{((Math.floor(parseFloat(store.wallet.rewards * 100) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
+            <p>{((Math.floor(parseFloat(store.wallet.cred_rewards || 0) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
             <p></p>
           </Grid.Column>
         </Grid.Row>
