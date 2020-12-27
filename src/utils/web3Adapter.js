@@ -166,7 +166,7 @@ class Web3Adapter {
     }
   }
 
-  // withdraw all + rewards
+  // withdraw all + rewards from prior CALM farm
   async exitOld() {
     this.cb.call(this, "wait", "Collecting all stake + rewards")
     try {

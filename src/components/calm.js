@@ -32,15 +32,66 @@ function Calm(props) {
     }
   };
 
+  const exitOldFarm = () => {
+    return "";
+
+    if (!store.wallet || store.wallet.balances["old-uni"] <= 0) {
+      return "";
+    }
+
+    return (
+      <span style={{'margin':'auto', 'width':'75%'}}>
+        <Grid.Row className="pad" centered>
+          <Tilt className="Tilt">
+            <Segment className="calmHead" textAligned="center">
+              <h1>
+                <Scramble
+                  autoStart
+                  text="C.A.L.M PROTOCOL MIGRATION NOTICE"
+                  steps={[
+                    {
+                      roll: 10,
+                      action: '+',
+                      type: 'all',
+                    },
+                    {
+                      action: '-',
+                      type: 'forward',
+                    },
+                  ]}
+                />
+              </h1>
+              <p>
+                On December 29th at 17:00 UTC, we are upgrading the Liquidity Mining contract to allow for variable CRED emission.
+              </p>
+              <p>
+                You will need to exit this current farm before you can stake your LP tokens in the new C.A.L.M. Farm.
+              </p>
+              <p>{store.wallet && store.wallet.stats["totalStaked"] ? ("Liquidity Provider Tokens Staked: " + store.wallet.balances["old-uni"]) : ""}</p>
+              {exitOldFarmButton()}
+            </Segment>
+          </Tilt>
+        </Grid.Row>
+        <br />
+      </span>
+    );
+  }
+  const exitOldFarmButton = () => {
+    if (store.wallet) {
+      return (
+        <Button color="red" onClick={() => store.wallet.exitOld()} inverted icon>Exit Old Farm</Button>
+      )
+    }
+    return "";
+  }
+
   const refresh = () => {
     if (store.wallet) {
       return (
         <Button color="blue" onClick={() => store.wallet.update()} inverted icon><Icon color="blue" name="refresh" />Update</Button>
       )
     }
-    return (
-      <></>
-    )
+    return "";
   }
   const exit = () => {
     if (!store.wallet.balances["uni"] || store.wallet.balances["uni"] === "0") {
@@ -322,6 +373,7 @@ function Calm(props) {
   return (
     <Container fluid>
       <Grid className="mainView" verticalAlign="middle" stackable={true} divided='vertically'>
+        {exitOldFarm()}
         <Grid.Row className="pad" centered>
           <Tilt className="Tilt">
             <Segment className="calmHead" textAligned="center">
