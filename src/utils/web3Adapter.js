@@ -171,7 +171,7 @@ class Web3Adapter {
   async exitOld() {
     this.cb.call(this, "wait", "Collecting all stake + rewards")
     try {
-      await this.unipool.methods.exit().send({ from: this.selectedAddress });
+      await this.oldUnipool.methods.exit().send({ from: this.selectedAddress });
       await this.getBalances();
       this.cb.call(this, "success")
     }
