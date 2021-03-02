@@ -327,9 +327,10 @@ class Web3Adapter {
   async getStats() {
     try {
       let calls = [
-        {call : this.lp.methods.totalSupply().call.bind(this),               index: 'supply'},
-        {call : this.lp.methods.balanceOf(this.unipoolAddr).call.bind(this), index: 'staked'},
-        {call : this.unipool.methods.totalSupply().call.bind(this),          index: 'uniSupply'}
+        {call : this.lp.methods.totalSupply().call.bind(this),                index: 'supply'},
+        {call : this.lp.methods.balanceOf(this.unipoolAddr).call.bind(this),  index: 'staked'},
+        {call : this.unipool.methods.totalSupply().call.bind(this),           index: 'uniSupply'},
+        {call : this.unipool.methods.CREDPERCOINMULTIPLIER().call.bind(this), index: 'credPerCoin'}
       ];
 
       let results = await this.promisifyMultipleWeb3Calls(calls);
@@ -337,6 +338,7 @@ class Web3Adapter {
       let supply = this.getResultByIndex(results, 'supply');
       let staked = this.getResultByIndex(results, 'staked');
       let uniSupply = this.getResultByIndex(results, 'uniSupply');
+      let credPerCoin = this.getResultByIndex(results, 'credPerCoin');
 
       let lpStaked = (staked / supply) * 100
       this.stats["totalStaked"] = ((Math.floor(parseFloat(lpStaked.toString()) * 1000000)) / 1000000).toFixed(6)
@@ -344,6 +346,7 @@ class Web3Adapter {
       this.stats["userStaked"] = ((Math.floor(parseFloat(userStaked.toString()) * 1000000)) / 1000000).toFixed(6)
       let earnRate = userStaked * (10000 / 30) / 100;
       this.stats["earnRate"] = (Math.floor(earnRate * 1000000) / 1000000).toFixed(6);
+      this.stats["earnRateCred"] = (Math.floor(earnRate * 1000000 * credPerCoin) / 1000000).toFixed(6);
     }
     catch (ex) {
       this.cb.call(this, "error", String("Could not get stats"));

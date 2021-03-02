@@ -302,7 +302,7 @@ function Calm(props) {
             <h3>Rewards();</h3>
             <p>----</p>
             <p>COIN Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"]) * 1000000)) / 1000000).toFixed(6)} / Day</p>
-            <p>$CRED Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRate"] * 100) * 1000000)) / 1000000).toFixed(6)} / Day</p>
+            <p>$CRED Rate: {((Math.floor(parseFloat(store.wallet.stats["earnRateCred"]) * 1000000)) / 1000000).toFixed(6)} / Day</p>
             <p>----</p>
             <p>{((Math.floor(parseFloat(store.wallet.rewards) * 1000000)) / 1000000).toFixed(6)} COIN</p>
             <p>{((Math.floor(parseFloat(store.wallet.cred_rewards || 0) * 1000000)) / 1000000).toFixed(6)} $CRED</p>
