@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { push as Menu } from "react-burger-menu";
 import { Image } from "semantic-ui-react";
@@ -9,20 +9,29 @@ import { StoreContext } from "../store/store.js";
 function BurgerMenu() {
     const { store, actions } = useContext(StoreContext);
     const [menuOpen, setMenu] = useState(false)
+    const [hasBal, updateBal] = useState(false)
 
-    const handleStateChange = (state) => {
-        setMenu(state.isOpen)
-    }
-
-    const hasBal = () => {
+    useEffect(() => {
         if (store.wallet && store.wallet.balances) {
-            for (let i = 0; i < store.wallet.balances.length; i++) {
-                if (store.wallet.balances[i] > 0 || parseInt(store.wallet.balances[i]) > 0) {
-                    return true
+            let balKeys = Object.keys(store.wallet.balances)
+            for (let i = 0; i < balKeys.length; i++) {
+                if (balKeys[i] == "coin" || 
+                    balKeys[i] == "cred" ||
+                    balKeys[i] == "lp" ||
+                    balKeys[i] == "uni"
+                ) {
+                    continue
+                }
+                if (store.wallet.balances[balKeys[i]] > 0 || parseInt(store.wallet.balances[balKeys[i]]) > 0) {
+                    return updateBal(true)
                 }
             }
         }
-        return false;
+        return updateBal(false);
+    }, [store.wallet.balances])
+
+    const handleStateChange = (state) => {
+        setMenu(state.isOpen)
     }
 
     return (
@@ -32,14 +41,15 @@ function BurgerMenu() {
             <Link id="home" onClick={() => setMenu(false)} className="menu-item" to={"/"}>
                 {">"} Home
                 </Link>
-            {!hasBal() ? (<></>) : (<>
+            
             <Link id="calm" onClick={() => setMenu(false)} className="menu-item" to={"/calm"}>
                 {">"} C.A.L.M
                 </Link>
+            {!hasBal ? (<></>) : (
             <Link id="farm" onClick={() => setMenu(false)} className="menu-item" to={"/farm"}>
                 {">"} NFT Farms
                 </Link>
-            </>)}
+            )}
             <Link id="charter" onClick={() => setMenu(false)} className="menu-item" to={"/charter"}>
                 {">"} Charter
                 </Link>

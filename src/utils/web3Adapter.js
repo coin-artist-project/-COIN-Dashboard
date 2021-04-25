@@ -279,7 +279,7 @@ class Web3Adapter {
         this.balances[result.index] = value;
       }
 
-      console.log("balances:", this.balances);
+      //console.log("balances:", this.balances);
 
       await this.getEarnedFarms();
       await this.getStats();
